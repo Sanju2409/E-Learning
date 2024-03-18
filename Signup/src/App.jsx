@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 //import PrivateRoute from './PrivateRoute';
 //import { AuthProvider } from './context/AuthProvider';
 import AddStaff from './AddStaff';
-import StudentsDashboard from './Student-dashboard'; 
+import StudentsDashboard from './Student-dashboard.jsx'; 
 import StaffDashboard from './Staff-Dashboard'; 
 import ViewCourse from './view-course';
 import CreateCourse  from './create-course';

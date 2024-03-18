@@ -26,7 +26,7 @@ function Login(){
                 } 
                 else{
                   
-                  navigate('/Staff-Dashboard',{ state: { userEmail: email } })
+                  navigate('/Staff-Dashboard',{ state: { userEmail: email,staffId: result.data.staffId  } })
                 }
                   
               } else {

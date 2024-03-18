@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
+// import jwt_decode from "jwt-decode";
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,9 +16,11 @@ const StaffDashboard = () => {
   const [time, setTime] = useState("");
   const [meetingInfo, setMeetingInfo] = useState("");
   const [meetings, setMeetings] = useState([]);
+  // const[staffId,setStaffId]=useState(null);
 
   const location = useLocation()
   const userEmail = location.state?.userEmail;
+   const staffId=location.state?.staffId;
 
   const navigate = useNavigate()
   axios.defaults.withCredentials = true;
@@ -46,20 +48,80 @@ const StaffDashboard = () => {
     setTime("");
     setMeetingInfo("");
   };
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+  //   if (token) {
+  //     try {
+  //       const decodedToken = jwt_decode(token);
+  //       const staffId = decodedToken.staffId;
+  //       // Now you have the staffId, you can use it as needed
+  //       console.log("Staff ID:", staffId);
+  //       // Fetch data from the server
+  //       axios.get('http://localhost:3001/Staff-Dashboard')
+  //         .then(res => {
+  //           if(res.data.valid){
+  //             //
+  //           } else {
+  //             navigate('/');
+  //           }
+  //         })
+  //         .catch(err => {
+  //           console.error('Error checking authentication:', err);
+  //         });
+  //     } catch (error) {
+  //       console.error("Error decoding JWT token:", error);
+  //     }
+  //   } else {
+  //     console.log("User not logged in");
+  //     navigate('/');
+  //   }
+  // }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/Staff-Dashboard')
+    console.log("Staff ID:", staffId);
+    axios.get('http://localhost:3001/Staff-Dashboard/${staffId}')
       //.then(res=>console.log(res))
       //.catch(err=>console.log(err))
       .then(res => {
-        if (res.data.valid) {
-          // setMessage(res.data.message)
-        }
+        if(res.data.valid){
+          //
+          }
+          
         else {
           navigate('/')
         }
-      })
-  })
+         
+        })
+        .catch(err=>{
+          console.error('Error checking authentication:',err);
+        });
+        
+      });
+      
+  // useEffect(() => {
+  //   // Fetch data from the server
+  //   axios.get('http://localhost:3001/Staff-Dashboard')
+  //     .then(res => {
+  //       if (res.data.valid) {
+  //         // Retrieve JWT token from localStorage
+  //         const token = localStorage.getItem("token");
+  //         if (token) {
+  //           const decodedToken = jwt_decode(token);
+  //           const staffId = decodedToken.staffId;
+  //           setStaffId(staffId);
+          
+  //         } else {
+  //           // Handle case where token is not available
+  //         }
+  //       } else {
+  //         navigate('/');
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.error('Error checking authentication:', err);
+  //     });
+  // }, [navigate, setStaffId]);
+  
   return (
     <div className="staffdiv vh-100 " >
       <nav className="navbarstaff justify-content-space-between fixed-top ">
@@ -74,13 +136,13 @@ const StaffDashboard = () => {
                 <Link to="/Staff-Dashboard" state={{ userEmail }} className="nav-link">Home</Link>
               </li>
               <li className="nav-item">
-                <Link to="/viewcourse" state={{ userEmail }} className="nav-link">View Courses</Link>
+                <Link to="/viewcourse" state={{ userEmail,staffId}} className="nav-link">View Courses</Link>
               </li>
               <li className="nav-item">
-                <Link to="/createcourse" state={{ userEmail }} className="nav-link">Create Course</Link>
+                <Link to="/createcourse" state={{ userEmail,staffId}} className="nav-link">Create Course</Link>
               </li>
               <li className="nav-item">
-                <Link to="/profile" state={{ userEmail }} className="nav-link">Profile</Link>
+                <Link to="/profile" state={{ userEmail}} className="nav-link">Profile</Link>
               </li>
             </ul>
           </div>

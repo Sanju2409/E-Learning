@@ -5,12 +5,13 @@ const RegisterModel = require('./models/Register')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
+const CourseModel = require('./models/Courses')
 
 
 const app = express()
 
 app.use(cors({
-    origin: ["http://localhost:5175"],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST"],
     credentials: true
 }))
@@ -81,12 +82,12 @@ app.post('/login', (req, res) => {
                     }
                     if (result) {
                         // Passwords match
-                        const token = jwt.sign({ email: req.body.email, role: req.body.role }, "jwt-access-key", { expiresIn: '60m' });
+                        const token = jwt.sign({ email: req.body.email, role: req.body.role,staffId:user._id }, "jwt-access-key", { expiresIn: '60m' });
                         const refreshtoken = jwt.sign({ email: req.body.email, role: req.body.role }, "jwt-refresh-key", { expiresIn: '60m' });
                         res.cookie('token', token, { httpOnly: true }, { maxAge: 60000 });
                         res.cookie('refreshtoken', refreshtoken, { httpOnly: true, maxAge: 60000, secure: true, sameSite: 'strict' });
-
-                        return res.json({ status: "Success", role: user.role });
+                        
+                        return res.json({ status: "Success", role: user.role,staffId:user._id });
                     } else {
                         // Passwords don't match
                         return res.json({ error: "Incorrect password" });
@@ -101,6 +102,99 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: "Internal Server Error" });
         });
 });
+
+
+
+
+// app.post('/createcourse', (req, res) => {
+//     const { courseName, courseId, semester } = req.body;
+//     CourseModel.findOne({ courseId:courseId })
+//         .then(course => {
+//             if (course) {
+//                 return res.json({error:"Course Id already exists"});
+//             }
+//             else {
+//                 CourseModel.findOne({ courseName:courseName, semester:semester })
+//                     .then(coursewithname => {
+//                         if (coursewithname) {
+//                             return res.json({error:"Course name already exists for this semester"});
+//                         }
+//                         else {
+//                             CourseModel.create({ courseName: courseName, courseId: courseId, semester: semester })
+                               
+//                                 return res.json({error:"Created succesfully"})
+//                                 .catch(err => res.status(500).json(err))
+//                         }
+//                     })
+//                     .catch(err => res.status(500).json(err))
+//             }
+//         })
+//         .catch(err => res.status(500).json(err))
+
+// })
+app.post('/Staff-Dashboard',(req,res)=>{
+
+})
+app.post('/createcourse', (req, res) => {
+    const { courseName, courseId, semester } = req.body;
+    const staffId=req.body.staffId;
+   
+    CourseModel.findOne({ staffId:staffId,courseId:courseId })
+        .then(course => {
+            if (course) {
+               return res.json({error:"Course Id already exists"});
+            }
+            else {
+                CourseModel.findOne({ staffId:staffId,courseName:courseName, semester:semester })
+                    .then(coursewithname => {
+                        if (coursewithname) {
+                          return  res.json({error:"Course name already exists for this semester"});
+                        }
+                        else {
+                             // Create a new course associated with the staff member
+                            CourseModel.create({ courseName: courseName, courseId: courseId, semester: semester,staffId:staffId })
+                          // return res.json({courseName:courseName,staffId:staffId})
+                               .then(result => res.json("Course added  Successfully"))
+                                .catch(err => res.status(500).json(err))
+                        }
+                    })
+                    .catch(err => res.status(500).json(err))
+            }
+        })
+        .catch(err => res.status(500).json(err))
+
+})
+
+app.get('/viewcourse', async (req, res) => {
+    try {
+        const { staffId } = req.query;
+        console.log("Received staffId:", staffId); 
+        let courses;
+        if (staffId) {
+            courses = await CourseModel.find({ staffId: staffId });
+        } else {
+            courses = await CourseModel.find();
+        }
+        res.json(courses);
+    } catch (err) {
+        console.error("Error fetching courses:", err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+// app.get('/viewcourse',async (req,res)=>{
+//     try{
+//         const courses=await CourseModel.find();
+//         res.json(courses);
+//     }
+//     catch(err){
+//         console.error("Error fetching courses:",err);
+//         res.status(500).json({error:'Internal server error'});
+//     }
+// })
+
+
 const varifyUser = (req, res, next) => {
     const accesstoken = req.cookies.token;
     if (!accesstoken) {
