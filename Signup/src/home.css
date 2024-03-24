@@ -1,0 +1,71 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+   body{
+    font-family: "Poppins", sans-serif;
+    background-image: url('../public/bckimg2.jpg');
+     /* Replace 'path/to/your/image.jpg' with the actual path to your image file */
+    
+    background-size: cover; /* This property ensures that the background image covers the entire body */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents the background image from repeating */
+    margin: 0 !important; /* Removes default body margin */
+    padding: 0  !important; /* Removes default body padding */
+    font-family: Arial, sans-serif;
+    /* width: 100%;
+    height: 100%; */
+    
+   }
+
+
+
+/* nav ul {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+} */
+
+.hero p {
+  font-weight: 600;
+  color:#4d4f55;
+  max-width: 400px;
+  z-index: 1;
+  color: white;
+}
+
+ul{
+  list-style: none;
+}
+
+.hero {
+  flex:1;
+  display: flex;
+  align-items: center;
+  height: calc(100vh - 72px);
+}
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+ 
+}
+.hero h1 {
+  font-weight: 800;
+  line-height: 102px;
+  font-size: 108px;
+  color: white;
+}
+
+
+.hero-btn {
+  display: flex;
+  gap: 40px;
+}
+.hero-btn button {
+  font-size: 24px;
+}
+.justtesting{
+max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.5rem 20px;
+  text-align: center;
+}

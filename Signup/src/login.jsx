@@ -81,8 +81,8 @@ function Login(){
                 className="form-control rounded-0"
             />
           </div>
-          <button type="submit" className="btn btn-success w-100 rounded-0">Login</button>
-         
+          <button type="submit" className="btn btn-success w-50 rounded-0">Login</button>
+
         </form>
         <p>Do not have an account?</p>
         <Link to="/register" className="btn btn-default w-100 bg-light rounded-0 text-decoration-none">
