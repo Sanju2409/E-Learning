@@ -180,6 +180,22 @@ app.get('/viewcourse', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.get('/fetchstudentaddedtoCourses', async (req, res) => {
+    try {
+        const { staffId,courseId } = req.query;
+        let studentcourses;
+        if (staffId) {
+            studentcourses = await StudentCourseModel.find({ staffId: staffId,courseId:courseId });
+        } else {
+            studentcourses = await StudentCourseModel.find();
+        }
+        res.json(studentcourses);
+    } catch (err) {
+        console.error("Error fetching studentcourses:", err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
 app.get('/student',async(req,res)=>{
 try{
     const students=await RegisterModel.find({role:'student'})

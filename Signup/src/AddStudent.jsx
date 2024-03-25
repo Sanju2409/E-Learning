@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 
+
 function AddStudent() {
     //const [courses, setCourses] = useState([])
     const [students, setStudents] = useState([])
@@ -11,36 +12,14 @@ function AddStudent() {
     const staffId = location.state?.staffId;
     const courseId = location.state?.courseId;
     const [studentss, setStudentss] = useState([
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-        { id: 3, name: 'Alice Johnson', email: 'alice@example.com' },
+        
     ]);
 
     const removeStudent = (id) => {
         setStudentss(students.filter(student => student.id !== id));
     };
     useEffect(() => {
-        // Fetch courses created by the logged-in staff member
-        // const fetchCourses = async () => {
-        //     try {
-        //         // Fetch courses from the backend API
-        //         // const response = await axios.get("http://localhost:3001/viewcourse");
-        //         // const filteredCourses = response.data.filter(course => course.staffId === staffId);
-        //         // setCourses(filteredCourses)
-        //         console.log("Staff ID:", location.state.staffId);
-
-        //         const response = await axios.get("http://localhost:3001/viewcourse", {
-        //             params: {
-        //                 staffId: location.state.staffId
-        //             }
-        //         });
-        //         setCourses(response.data);
-        //     }
-
-        //     catch (error) {
-        //         console.error("Error fetching courses:", error);
-        //     }
-        // };
+       
         const fetchStudent = async () => {
             try {
                 console.log("Staff Id:", location.state.staffId);
@@ -51,12 +30,31 @@ function AddStudent() {
                 console.log("Error fetching students", error);
             }
         }
+        const fetchstudentaddedtoCourses = async () => {
+            try {
+                // Fetch courses from the backend API
+                // const response = await axios.get("http://localhost:3001/viewcourse");
+                // const filteredCourses = response.data.filter(course => course.staffId === staffId);
+                // setCourses(filteredCourses)
+                console.log("Staff ID:", location.state.staffId);
 
+                const response = await axios.get("http://localhost:3001/fetchstudentaddedtoCourses", {
+                    params: {
+                        staffId: location.state.staffId,
+                        courseId:courseId
+                    }
+                });
+                setStudentss(response.data);
+            }
 
-
-
+            catch (error) {
+                console.error("Error fetching courses:", error);
+            }
+        };
         //fetchCourses();
         fetchStudent();
+        fetchstudentaddedtoCourses();
+        // fetchStudentsAddedByStaff();
 
     }, [location.state]);
 
@@ -117,7 +115,7 @@ function AddStudent() {
                 </nav>
                 
                 <div className="addstudent-container col-md-6 align-left"  >
-                <div className="container" style={{display:"flex", width: "1000px" }}>
+                <div className="container" style={{display:"flex", width: "700px" }}>
                     <div className="card shadow " style={{ maxWidth: "400px", width: "100%" }}>
                         <h2>Add Student to Course</h2>
                         <div className="card-body"></div>
@@ -184,7 +182,7 @@ function AddStudent() {
                         </table>
                     </div> */}
                  
-      <div >
+      <div className="displayadddedstudent" >
       <table className="table">
         <thead>
           <tr>

@@ -1,11 +1,47 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0 ;
+  padding: 0;
+  width: 100%;
   color:#000;
-}
 
+  
+}
+.course-list{
+  margin-left: 20%;
+  width: 60%;
+}
+.addstudent-container {
+  margin-left: 20%;
+  display: flex;
+  position:absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.apphome {
+  background-image: url('../public/bckimg2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%; /* Ensure the container fills the entire viewport */
+  display: flex;
+  flex-direction: column;
+}
+.calendar-container  {
+  width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+.addschedulebtn{
+ justify-content: center;
+ width: 50%;
+ margin-left: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 30px;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -92,18 +128,15 @@
 .navbarstaff.nav-link:hover {
   color: #ccc;
 } 
-.addstudent-container {
+/* .addstudent-container {
   position:absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
+  margin-left: 10%;
+ 
+ 
+  scroll-behavior:auto;
+} */
 
-.addstudent {
-  position: absolute;
-  left: 0;
-  /* top: 50%;
-  transform: translateY(-50%); */
-}
+
 
 .dropzone {
   background-color: #b1a9f3;
@@ -113,6 +146,8 @@
   transition: all 0.3s ease;
   border-radius: 50px;
   font-size: 30px;
+  margin-left: 35%;
+  width: 30%;
   
 }
 
@@ -120,7 +155,10 @@
   background-color: #b6bcd9;
   border-color: #007bff;
 }
-
+.addmateraildiv{
+  margin-left: 40%;
+  width: 30%;
+}
 .dropzone-content {
   display: flex;
   flex-direction: column;
@@ -129,6 +167,18 @@
   width: 100%;
   height: 100%;
   text-align: center;
+  
+}
+
+.log{
+
+  height: 800px;
+  
+  width: 20%;
+  margin-left: 40%;
+  text-align: center;
+  border-radius: 50%;
+
 }
 
 .dropzone-content p {
@@ -199,6 +249,7 @@
 .dropzone-content ul li:hover {
   background-color: #f5f5f5;
 }
+
 
 @media (max-width: 600px) {
   .dropzone-content p {
