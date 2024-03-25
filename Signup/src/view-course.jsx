@@ -8,6 +8,7 @@ function ViewCourse() {
     const userEmail = location.state?.userEmail;
     const staffId = location.state?.staffId;
     const [courses, setCourses] = useState([])
+    
     useEffect(() => {
         // Fetch courses created by the logged-in staff member
         const fetchCourses = async () => {
@@ -30,7 +31,14 @@ function ViewCourse() {
                 console.error("Error fetching courses:", error);
             }
         };
+      
+
+
+
+
         fetchCourses();
+       
+
     }, [staffId]);
     // const [courses] = useState([
     //     { id: 1, name: 'Course 1', numberOfStudents: 20 },
@@ -38,8 +46,8 @@ function ViewCourse() {
     //     { id: 3, name: 'Course 3', numberOfStudents: 40 },
     // ]);
 
-    const handleAddStudent = () => {
-        console.log("Add student to course")
+    const handleAddStudent = (courseId, studentId) => {
+        console.log("Add student "+studentId+" to course " + courseId  )
         //     //  setCourses(courses.map((c) => (c.id === course.id ? { ...c, numberOfStudents: c.numberOfStudents + 1 } : c)));
     };
 
@@ -62,7 +70,7 @@ function ViewCourse() {
                         <ul className="navbar-nav-horizontal" >
 
                             <li className="nav-item">
-                                <Link to="/Staff-Dashboard" state={{ userEmail,staffId}} className="nav-link">Home</Link>
+                                <Link to="/Staff-Dashboard" state={{ userEmail, staffId }} className="nav-link">Home</Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/viewcourse" state={{ userEmail, staffId: staffId }} className="nav-link">View Courses</Link>
@@ -71,7 +79,7 @@ function ViewCourse() {
                                 <Link to="/createcourse" state={{ userEmail, staffId: staffId }} className="nav-link">Create Course</Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/profile" state={{ userEmail,staffId}} className="nav-link">Profile</Link>
+                                <Link to="/profile" state={{ userEmail, staffId }} className="nav-link">Profile</Link>
                             </li>
                         </ul>
                     </div>
@@ -88,7 +96,9 @@ function ViewCourse() {
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Course Id</th>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Number of Students</th>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Add Student</th>
-                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Add Material</th>
+                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>
+                                <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }}>Add Material</Link>
+                            </th>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>View</th>
                         </tr>
                     </thead>
@@ -99,13 +109,26 @@ function ViewCourse() {
                                 <td>{course.courseId}</td>
                                 <td>{course.numberOfStudents}</td>
                                 <td>
-                                    <button style={{ backgroundColor: '#4177a2' }} onClick={() => handleAddStudent(course.courseId)}>Add Student</button>
-
+                                    {/* <select onChange={(e) => handleAddStudent(course.courseId, e.target.value)}>
+                                        <option value="">Select Student</option>
+                                        {students.map((student) => (
+                                            <option key={student.email} value={student.email}>
+                                                {student.email}
+                                            </option>
+                                        ))}
+                                    </select> */}
+                                    <Link to="/AddStudentToCourse" style={{ textDecoration: 'none', color: 'inherit' }} state={{ userEmail, staffId: staffId,courseId:course.courseId}}>
+                                        <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddStudent(course.courseId)}>Add Student</button>
+                                    </Link>
                                 </td>
                                 <td>
-                                    <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button>
+                                    <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button>
+                                    </Link>
+                                    {/* <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button> */}
                                 </td>
-                                <td>                                    <button style={{ backgroundColor: '#105750', marginLeft: '10px' }} onClick={() => handleView(course.courseId)}>View</button>
+                                <td>
+                                    <button style={{ backgroundColor: '#105750', marginLeft: '10px' }} onClick={() => handleView(course.courseId)}>View</button>
                                 </td>
                             </tr>
                         ))}

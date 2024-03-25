@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const CourseModel = require('./models/Courses')
+const StudentCourseModel = require('./models/StudentsInCourse')
 
 
 const app = express()
@@ -40,9 +41,7 @@ app.post('/register', (req, res) => {
                     }
 
                     ).catch(err => res.json(err))
-
-
-            }
+           }
         })
 
 })
@@ -181,7 +180,41 @@ app.get('/viewcourse', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.get('/student',async(req,res)=>{
+try{
+    const students=await RegisterModel.find({role:'student'})
+    res.json(students);
+}
+catch(error){
+    console.log("Error fetching students",error);
 
+}
+});
+
+app.post('/AddStudentToCourse',async(req,res)=>{
+    const{email,staffId,courseId}=req.body;
+    console.log("Request Body:", req.body);
+    try{
+        StudentCourseModel.findOne({email:email,courseId:courseId})
+        .then(student=>{
+            if(student){
+                res.json("Student already added to this course");
+            }
+            else{
+                StudentCourseModel.create({courseId:courseId,email:email,staffId:staffId})
+                .then(result=>{
+                    res.json("Account created")
+                //.catch(err=>res.json(err))
+                })
+            }
+        })
+    }
+    catch{
+        console.error("Error:", err);
+        res.status(500).json({ error: err.message });
+    }
+    
+})
 
 // app.get('/viewcourse',async (req,res)=>{
 //     try{

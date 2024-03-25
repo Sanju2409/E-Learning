@@ -13,7 +13,8 @@ import StudentsDashboard from './Student-dashboard.jsx';
 import StaffDashboard from './Staff-Dashboard'; 
 import ViewCourse from './view-course';
 import CreateCourse  from './create-course';
-
+import UploadMaterialPage from './AddMaterial.jsx';
+import AddStudent from './AddStudent.jsx';
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
           <Route path="/viewcourse" element={<ViewCourse/>} />
           <Route path="/createcourse" element={<CreateCourse/>} />
        
-          
+          <Route path="/AddMaterial" element={<UploadMaterialPage/>} />
+          <Route path="/AddStudentToCourse" element={<AddStudent/>}/>
          
          
           
