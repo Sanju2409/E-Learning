@@ -13,28 +13,41 @@ import StudentsDashboard from './Student-dashboard.jsx';
 import StaffDashboard from './Staff-Dashboard'; 
 import ViewCourse from './view-course';
 import CreateCourse  from './create-course';
+
+import Profile from './Profile.jsx';
+import Profiles from './Profiles.jsx';
+import Home from './home.jsx';
+import Navigation from './Navbar.jsx';
+import Footer from './footer.jsx';
+import Studviewcourse from './Studviewcourse.jsx';
+import Announcements from './Announcements.jsx';
+
 import UploadMaterialPage from './AddMaterial.jsx';
 import AddStudent from './AddStudent.jsx';
-
 function App() {
   return (
   
     <Router>
     
         <Routes>
-       
+        <Route path="/Navbar" element={<Navigation/>} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
          
-          
-          <Route path="/addstaff" element={<AddStaff/>} />
+          <Route path="/home" element={<Home />} />
+         
+          <Route path="/footer" element={<Footer />} />
+          <Route path="/Addstaff" element={<AddStaff/>} />
           <Route path="/Student-dashboard" element={<StudentsDashboard />} />
           
           <Route path="/Staff-Dashboard" element={<StaffDashboard />} />
-         
+          <Route path="/Studviewcourse" element={<Studviewcourse />} />
+        <Route path="/Announcements" element={<Announcements />} />
+        <Route path="/Profiles" element={<Profiles />} />
         
           <Route path="/viewcourse" element={<ViewCourse/>} />
           <Route path="/createcourse" element={<CreateCourse/>} />
+          <Route path="/Profile" element={<Profile/>}/>
        
           <Route path="/AddMaterial" element={<UploadMaterialPage/>} />
           <Route path="/AddStudentToCourse" element={<AddStudent/>}/>
