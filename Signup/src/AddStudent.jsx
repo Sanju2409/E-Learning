@@ -12,14 +12,14 @@ function AddStudent() {
     const staffId = location.state?.staffId;
     const courseId = location.state?.courseId;
     const [studentss, setStudentss] = useState([
-        
+
     ]);
 
     const removeStudent = (id) => {
         setStudentss(students.filter(student => student.id !== id));
     };
     useEffect(() => {
-       
+
         const fetchStudent = async () => {
             try {
                 console.log("Staff Id:", location.state.staffId);
@@ -41,7 +41,7 @@ function AddStudent() {
                 const response = await axios.get("http://localhost:3001/fetchstudentaddedtoCourses", {
                     params: {
                         staffId: location.state.staffId,
-                        courseId:courseId
+                        courseId: courseId
                     }
                 });
                 setStudentss(response.data);
@@ -113,54 +113,43 @@ function AddStudent() {
 
                     </div>
                 </nav>
-                
+
                 <div className="addstudent-container col-md-6 align-left"  >
-                <div className="container" style={{display:"flex", width: "700px" }}>
-                    <div className="card shadow " style={{ maxWidth: "400px", width: "100%" }}>
-                        <h2>Add Student to Course</h2>
-                        <div className="card-body"></div>
+                    <div className="container" >
+                        <div className="card shadow " style={{ maxWidth: "400px", width: "100%" }}>
+                            <h2>Add Student to Course</h2>
+                            <div className="card-body"></div>
 
-                        <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit}>
 
-                            <div className="mb-3">
-                                <label htmlFor="email">
-                                    <strong>Email</strong>
-                                </label>
+                                <div className="mb-3">
+                                    <label htmlFor="email">
+                                        <strong>Email</strong>
+                                    </label>
 
-                                <div style={{ marginTop: '10px' }}>
-                                    <input
-                                        type="text"
-                                        id="studentInput"
-                                        list="studentsList"
-                                        onChange={(e) => handleAddStudent(courseId, e.target.value)}
-                                        className="form-control"
-                                        placeholder="Enter student email"
-                                    />
-                                    <datalist id="studentsList">
-                                        {students.map((student) => (
-                                            <option key={student.email} value={student.email} />
-                                        ))}
-                                    </datalist>
+                                    <div style={{ marginTop: '10px' }}>
+                                        <input
+                                            type="text"
+                                            id="studentInput"
+                                            list="studentsList"
+                                            onChange={(e) => handleAddStudent(courseId, e.target.value)}
+                                            className="form-control"
+                                            placeholder="Enter student email"
+                                        />
+                                        <datalist id="studentsList">
+                                            {students.map((student) => (
+                                                <option key={student.email} value={student.email} />
+                                            ))}
+                                        </datalist>
+                                    </div>
                                 </div>
-                                {/* <select 
-                            style={{marginLeft:'30px'}} 
-                            onChange={(e) => handleAddStudent(courses.courseId, e.target.value)}
-                            multiple>
-                                        <option value="">Select Student</option>
-                                        {students.map((student) => (
-                                            <option key={student.email} value={student.email}>
-                                                {student.email}
-                                            </option>
-                                        ))}
-                                    </select> */}
-                            </div>
 
-                            <button type="submit" className="btn btn-success  rounded-100">Add Student</button>
+                                <button type="submit" className="btn btn-success  rounded-100">Add Student</button>
 
-                        </form>
+                            </form>
 
-                    </div>
-                    {/* <div>
+                        </div>
+                        {/* <div>
                         <h2>Student List</h2>
                         <table>
                             <thead>
@@ -181,41 +170,41 @@ function AddStudent() {
                             </tbody>
                         </table>
                     </div> */}
-                 
-      <div className="displayadddedstudent" >
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {studentss.map((student) => (
-            <tr key={student._id}>
-              <td>{student.name}</td>
-              <td>{student.email}</td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => removeStudent(student._id)}
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      </div>
-    
-    </div>
+
+                        <div className="displayadddedstudent" >
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {studentss.map((student) => (
+                                        <tr key={student._id}>
+                                            <td>{student.name}</td>
+                                            <td>{student.email}</td>
+                                            <td>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => removeStudent(student._id)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
-    </div>
+        </div>
     )
 }
 export default AddStudent;
