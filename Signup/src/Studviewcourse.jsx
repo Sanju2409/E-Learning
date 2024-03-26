@@ -1,6 +1,7 @@
 import { useState,useEffect } from "react";
 import { Link, useLocation } from "react-router-dom"
 import './App.css'
+import './studviewcourse.css';
 import axios from "axios";
 function Studviewcourse() {
 
@@ -81,7 +82,7 @@ const location = useLocation();
     useEffect(() => {
         const fetchStudentCourses = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/student-courses', {
+                const response = await axios.get('http://localhost:3001/studentcourses', {
                     params: {
                         studentEmail: userEmail,
                     },
@@ -124,9 +125,9 @@ const location = useLocation();
                 <h2 className="course-list-title">Course List</h2>
                 <div className="course-cards-container">
                     {studentCourses.map((course) => (
-                        <div key={course.id} className="course-card">
+                        <div key={course.courseId} className="course-card">
                             <div className="course-info">
-                                <h3 className="course-title">{course.name}</h3>
+                                <h3 className="course-title">{course.courseId}</h3>
                                 {/* <p className="course-description">Instructor: {course.instructor}</p>
                                 <p className="course-description">Students Enrolled: {course.StudentsEnrolled}</p> */}
                                 <button className="view-button" onClick={() => handleView(course)}>View</button>

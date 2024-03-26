@@ -33,9 +33,11 @@ function App() {
         <Route path="/Navbar" element={<Navigation/>} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-         
+       
+          
           <Route path="/home" element={<Home />} />
-         
+          
+  
           <Route path="/footer" element={<Footer />} />
           <Route path="/Addstaff" element={<AddStaff/>} />
           <Route path="/Student-dashboard" element={<StudentsDashboard />} />

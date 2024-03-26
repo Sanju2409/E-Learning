@@ -22,7 +22,7 @@ function Login(){
                   navigate('/addstaff')
                 }
                else if(result.data.role==="student"){
-                  navigate('/Student-dashboard');
+                  navigate('/Student-dashboard',{ state: { userEmail: email,staffId: result.data.staffId  } });
                 } 
                 else{
                   
@@ -46,6 +46,7 @@ function Login(){
   };
   
     return (
+      <div className='log  vh-100'>
         <div className="row justify-content-center align-items-center  vh-100">
          <div className="col-md-12">
           <div className="card shadow">
@@ -90,6 +91,7 @@ function Login(){
         </Link>
       </div>
 
+    </div>
     </div>
     </div>
     )

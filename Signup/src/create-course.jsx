@@ -127,6 +127,7 @@ const CreateCourse = () => {
 
                 </div>
             </nav>
+            <div className='log'>
             <div className="row justify-content-center align-items-center  vh-100">
                 <div className="col-md-12">
                     <div className="card shadow">
@@ -194,6 +195,8 @@ const CreateCourse = () => {
 
                 </div>
             </div>
+            </div>
+            
         </div>
     )
 }

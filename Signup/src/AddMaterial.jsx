@@ -217,6 +217,7 @@ const UploadMaterialPage = () => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
+     
       <div className="dropzone-content">
         <p>Drag files here or click to select</p>
         <input
@@ -237,7 +238,9 @@ const UploadMaterialPage = () => {
             </li>))}
         </ul>
       </div>
-    </div>
+      </div>
+     
+    
   );
 };
 

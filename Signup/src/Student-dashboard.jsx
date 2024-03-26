@@ -52,18 +52,19 @@
 
 
 import axios from  "axios";
-import  {useEffect,useState} from 'react'
-import { useNavigate } from "react-router-dom";
+import  {useEffect} from 'react'
+import { useNavigate,useLocation } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
 const StudentDashboard=()=>{
-    const[message,setMessage]=useState('');
+    // const[message,setMessage]=useState('');
     const navigate=useNavigate();
-    const [courses, setCourses] = useState([]);
-  const [courseProgress, setCourseProgress] = useState([]);
+  //   const [courses, setCourses] = useState([]);
+  // const [courseProgress, setCourseProgress] = useState([]);
+  const location=useLocation();
   const userEmail = location.state?.userEmail;
-  const [announcements, setAnnouncements] = useState([]);
-  const [profile, setProfile] = useState({});
+  // const [announcements, setAnnouncements] = useState([]);
+  // const [profile, setProfile] = useState({});
     axios.defaults.withCredentials=true;
     useEffect(()=>{
         axios.get('http://localhost:3001/Student-dashboard')
@@ -71,7 +72,7 @@ const StudentDashboard=()=>{
         //.catch(err=>console.log(err))
         .then(res=>{
             if(res.data.valid){
-                setMessage(res.data.message)
+               // setMessage(res.data.message)
             }
             else{
                 navigate('/')

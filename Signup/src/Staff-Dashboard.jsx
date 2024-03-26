@@ -150,7 +150,7 @@ const StaffDashboard = () => {
 
         </div>
       </nav>
-      <div className="calendar-container " style={{ marginTop: '100px' }}>
+      <div className="calendar-container " style={{ marginTop: '100px', alignItems:'center',}}>
         <h2>Schedule</h2>
         <div className="calendar-and-date ">
 
@@ -187,7 +187,7 @@ const StaffDashboard = () => {
               className="form-control mt-2"
             />
           </div>
-          <button onClick={handleAddMeeting} className="btn btn-primary mt-2">
+          <button onClick={handleAddMeeting} className="addschedulebtn btn btn-primary mt-2 ">
            Add Event
           </button>
 
