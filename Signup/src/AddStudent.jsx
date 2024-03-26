@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 
-
+import './App.css';
 function AddStudent() {
     //const [courses, setCourses] = useState([])
     const [students, setStudents] = useState([])
@@ -115,7 +115,7 @@ function AddStudent() {
                 </nav>
 
                 <div className="addstudent-container col-md-6 align-left"  >
-                    <div className="container" >
+                    <div className="container1" >
                         <div className="card shadow " style={{ maxWidth: "400px", width: "100%" }}>
                             <h2>Add Student to Course</h2>
                             <div className="card-body"></div>

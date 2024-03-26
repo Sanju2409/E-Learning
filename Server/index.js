@@ -190,6 +190,7 @@ app.get('/fetchstudentaddedtoCourses', async (req, res) => {
             studentcourses = await StudentCourseModel.find();
         }
         res.json(studentcourses);
+        console.log(studentcourses);
     } catch (err) {
         console.error("Error fetching studentcourses:", err);
         res.status(500).json({ error: 'Internal server error' });
