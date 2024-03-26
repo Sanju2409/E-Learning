@@ -20,27 +20,7 @@ function AddStudent() {
         setStudentss(students.filter(student => student.id !== id));
     };
     useEffect(() => {
-        // Fetch courses created by the logged-in staff member
-        // const fetchCourses = async () => {
-        //     try {
-        //         // Fetch courses from the backend API
-        //         // const response = await axios.get("http://localhost:3001/viewcourse");
-        //         // const filteredCourses = response.data.filter(course => course.staffId === staffId);
-        //         // setCourses(filteredCourses)
-        //         console.log("Staff ID:", location.state.staffId);
-
-        //         const response = await axios.get("http://localhost:3001/viewcourse", {
-        //             params: {
-        //                 staffId: location.state.staffId
-        //             }
-        //         });
-        //         setCourses(response.data);
-        //     }
-
-        //     catch (error) {
-        //         console.error("Error fetching courses:", error);
-        //     }
-        // };
+      
         const fetchStudent = async () => {
             try {
                 console.log("Staff Id:", location.state.staffId);

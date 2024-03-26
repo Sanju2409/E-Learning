@@ -102,35 +102,6 @@ app.post('/login', (req, res) => {
         });
 });
 
-
-
-
-// app.post('/createcourse', (req, res) => {
-//     const { courseName, courseId, semester } = req.body;
-//     CourseModel.findOne({ courseId:courseId })
-//         .then(course => {
-//             if (course) {
-//                 return res.json({error:"Course Id already exists"});
-//             }
-//             else {
-//                 CourseModel.findOne({ courseName:courseName, semester:semester })
-//                     .then(coursewithname => {
-//                         if (coursewithname) {
-//                             return res.json({error:"Course name already exists for this semester"});
-//                         }
-//                         else {
-//                             CourseModel.create({ courseName: courseName, courseId: courseId, semester: semester })
-                               
-//                                 return res.json({error:"Created succesfully"})
-//                                 .catch(err => res.status(500).json(err))
-//                         }
-//                     })
-//                     .catch(err => res.status(500).json(err))
-//             }
-//         })
-//         .catch(err => res.status(500).json(err))
-
-// })
 app.post('/Staff-Dashboard',(req,res)=>{
 
 })
@@ -191,6 +162,8 @@ catch(error){
 }
 });
 
+
+
 app.post('/AddStudentToCourse',async(req,res)=>{
     const{email,staffId,courseId}=req.body;
     console.log("Request Body:", req.body);
@@ -209,12 +182,24 @@ app.post('/AddStudentToCourse',async(req,res)=>{
             }
         })
     }
+
     catch{
         console.error("Error:", err);
         res.status(500).json({ error: err.message });
     }
     
 })
+app.get('/student-courses', async (req, res) => {
+    try {
+        const { studentEmail } = req.query;
+        console.log("Received student email:", studentEmail); 
+        const courses = await StudentCourseModel.find({ email: studentEmail }).populate('courseId');
+        res.json(courses);
+    } catch (err) {
+        console.error("Error fetching student courses:", err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 // app.get('/viewcourse',async (req,res)=>{
 //     try{
