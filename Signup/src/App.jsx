@@ -24,6 +24,7 @@ import Announcements from './Announcements.jsx';
 
 import UploadMaterialPage from './AddMaterial.jsx';
 import AddStudent from './AddStudent.jsx';
+import View from './view.jsx'
 function App() {
   return (
   
@@ -53,7 +54,7 @@ function App() {
        
           <Route path="/AddMaterial" element={<UploadMaterialPage/>} />
           <Route path="/AddStudentToCourse" element={<AddStudent/>}/>
-         
+          <Route path="/View" element={<View/>}/>
          
           
         </Routes>

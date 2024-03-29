@@ -15,8 +15,25 @@ function AddStudent() {
 
     ]);
 
-    const removeStudent = (id) => {
-        setStudentss(students.filter(student => student.id !== id));
+    const removeStudent =async (studentEmail) => {
+        try{
+            await axios.delete('http://localhost:3001/removestudentfromcourse',{
+                data:{
+                    studentEmail:studentEmail,
+                    courseId:courseId,
+                    staffId:staffId
+                }
+            
+            });
+            setStudentss(studentss.filter(student=>student.email!==studentEmail));
+            console.log("Students removed successfully from the course");
+
+        }
+        catch(error){
+            console.error("Error removing student from the course:",error);
+        }
+       
+        
     };
     useEffect(() => {
 
@@ -83,6 +100,7 @@ function AddStudent() {
         setEmail(studentId);
         //     //  setCourses(courses.map((c) => (c.id === course.id ? { ...c, numberOfStudents: c.numberOfStudents + 1 } : c)));
     };
+    
     return (
         <div className="container" style={{ width: "1000px" }}>
             <div className="  row  vh-100">
@@ -175,7 +193,7 @@ function AddStudent() {
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Course Name</th>
                                         <th>Email</th>
                                         <th>Action</th>
                                     </tr>
@@ -183,12 +201,12 @@ function AddStudent() {
                                 <tbody>
                                     {studentss.map((student) => (
                                         <tr key={student._id}>
-                                            <td>{student.name}</td>
+                                            <td>{courseId}</td>
                                             <td>{student.email}</td>
                                             <td>
                                                 <button
                                                     className="btn btn-danger"
-                                                    onClick={() => removeStudent(student._id)}
+                                                    onClick={() => removeStudent(student.email)}
                                                 >
                                                     Remove
                                                 </button>
