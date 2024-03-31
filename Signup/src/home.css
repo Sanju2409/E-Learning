@@ -18,7 +18,7 @@
    .bg{
     margin: 0;
     padding: 0;
-    background-image: url('../public/bckimg2.jpg');
+    background-image: url('../bckimg2.jpg');
     background-size: cover; /* This property ensures that the background image covers the entire body */
     background-position: center; /* Centers the background image */
     background-repeat: no-repeat; /* Prevents the background image from repeating */
