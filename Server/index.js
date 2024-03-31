@@ -6,19 +6,155 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const CourseModel = require('./models/Courses')
+const multer = require('multer');
 const StudentCourseModel = require('./models/StudentsInCourse')
+const materialModel = require('./models/storeMaterials')
+
+const path = require('path');
+const fs = require('fs');
+
 
 const app = express()
 
 app.use(cors({
     origin: ["http://localhost:5173"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","DELETE"],
     credentials: true
 }))
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('/uploads'))
 mongoose.connect('mongodb://127.0.0.1:27017/test');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+     return cb(null, './uploads'); // specify the directory where files will be uploaded
+    },
+    filename: function (req, file, cb) {
+      return cb(null, file.originalname); // keep the original file name
+    }
+  });
+  const upload = multer({ storage});
+  app.post('/upload', upload.single('file'),async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+    }
+    const courseId = req.body.courseId;
+    const staffId=req.body.staffId;
+    const filePath=req.file.path; // Retrieve courseId from request body
+    // You can now use the courseId to associate it with the uploaded file
+    // if(materialModel.findOne({courseID : courseId,filePath:filePath})){
+    // }else{
+    //     const newMaterial=new materialModel({courseId,filePath});
+    //     await newMaterial.save();
+    // }
+    const existingMaterial = await materialModel.findOne({ courseId: courseId,staffId:staffId, filePath: filePath });
+
+    if (existingMaterial) {
+        return res.status(400).json({ message: 'File already exists for this course' });
+    }
+
+    // File doesn't exist for this course, save it to the database
+    const newMaterial = new materialModel({ courseId,staffId, filePath });
+    await newMaterial.save();
+    
+    res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename, courseId,staffId });
+});
+app.get('/materials',async(req,res)=>{
+    const { courseId, staffId } = req.query;
+
+    try {
+        const materials = await materialModel.find({ courseId: courseId, staffId: staffId });
+        res.json(materials);
+    } catch (error) {
+        console.error('Error fetching materials:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/material-content', (req, res) => {
+    const { filePath } = req.query;
+
+    // Check if filePath is provided
+    if (!filePath) {
+        return res.status(400).json({ error: 'File path is required' });
+    }
+
+    // Construct the absolute path to the file
+    const absoluteFilePath = path.join(__dirname, filePath);
+
+    // Check if the file exists
+    if (!fs.existsSync(absoluteFilePath)) {
+        return res.status(404).json({ error: 'File not found' });
+    }
+
+    // Read the content of the file
+    fs.readFile(absoluteFilePath, (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to read file' });
+        }
+
+        // Determine the appropriate content type based on file extension
+        const contentType = getContentType(filePath);
+
+        // Set the appropriate Content-Type header
+        res.setHeader('Content-Type', contentType);
+
+        // Send the file content as the response
+        res.status(200).send(data);
+    });
+});
+
+// Function to determine content type based on file extension
+function getContentType(filePath) {
+    const extname = path.extname(filePath);
+    switch (extname.toLowerCase()) {
+        case '.pdf':
+            return 'application/pdf';
+        case '.doc':
+        case '.docx':
+            return 'application/msword';
+        case '.xls':
+        case '.xlsx':
+            return 'application/vnd.ms-excel';
+        case '.png':
+            return 'image/png';
+        case '.jpg':
+        case '.jpeg':
+            return 'image/jpeg';
+        default:
+            return 'application/octet-stream';
+    }
+}
+
+// app.get('/material-content', (req, res) => {
+//     const { filePath } = req.query;
+
+//     // Check if filePath is provided
+//     if (!filePath) {
+//         return res.status(400).json({ error: 'File path is required' });
+//     }
+
+//     // Construct the absolute path to the file
+//     const absoluteFilePath = path.join(__dirname, filePath);
+//     console.log(absoluteFilePath);
+//     // Check if the file exists
+//     if (!fs.existsSync(absoluteFilePath)) {
+//         return res.status(404).json({ error: 'File not found' });
+//     }
+
+//     // Read the content of the file
+//     fs.readFile(absoluteFilePath, (err, data) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Failed to read file' });
+//         }
+//         res.setHeader('Content-Type', 'image/jpeg');
+//         // Send the file content as the response
+//         res.status(200).send(data);
+//     });
+// });
 
 app.post('/register', (req, res) => {
     const { name, email, password, role } = req.body;
@@ -160,6 +296,7 @@ app.get('/fetchstudentaddedtoCourses', async (req, res) => {
             studentcourses = await StudentCourseModel.find();
         }
         res.json(studentcourses);
+        console.log(studentcourses);
     } catch (err) {
         console.error("Error fetching studentcourses:", err);
         res.status(500).json({ error: 'Internal server error' });
@@ -176,8 +313,6 @@ catch(error){
 
 }
 });
-
-
 
 app.post('/AddStudentToCourse',async(req,res)=>{
     const{email,staffId,courseId}=req.body;
@@ -197,7 +332,6 @@ app.post('/AddStudentToCourse',async(req,res)=>{
             }
         })
     }
-
     catch{
         console.error("Error:", err);
         res.status(500).json({ error: err.message });
@@ -216,6 +350,23 @@ app.get('/studentcourses', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+app.delete('/removestudentfromcourse',async(req,res)=>{
+    const {studentEmail,courseId,staffId}=req.body;
+    try{
+            await StudentCourseModel.findOneAndDelete({email:studentEmail,courseId:courseId,staffId:staffId}) ;
+            res.json({message:'Student removed from the course'});     
+            console.log("Student removed from the course")  
+
+    }catch(error){
+        console.error('Error removing students from the course:',error);
+
+    }
+});
+
+
+
 
 // app.get('/viewcourse',async (req,res)=>{
 //     try{

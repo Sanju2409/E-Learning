@@ -95,7 +95,8 @@ function ViewCourse() {
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>
                                 <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }}>Add Material</Link>
                             </th>
-                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>View</th>
+                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>
+                                <Link to="/view" style={{textDecoration:'none',color:'inherit'}}>View</Link></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,13 +119,15 @@ function ViewCourse() {
                                     </Link>
                                 </td>
                                 <td>
-                                    <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }} state={{ userEmail, staffId: staffId,courseId:course.courseId}}>
                                         <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button>
                                     </Link>
                                     {/* <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button> */}
                                 </td>
                                 <td>
+                                <Link to="/view" style={{textDecoration:'none',color:'inherit'}}  state={{ userEmail, staffId: staffId,courseId:course.courseId}}>
                                     <button style={{ backgroundColor: '#105750', marginLeft: '10px' }} onClick={() => handleView(course.courseId)}>View</button>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
