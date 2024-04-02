@@ -28,6 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('/uploads'))
 mongoose.connect('mongodb://127.0.0.1:27017/test');
 
+
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
      return cb(null, './uploads'); // specify the directory where files will be uploaded
@@ -36,7 +39,12 @@ const storage = multer.diskStorage({
       return cb(null, file.originalname); // keep the original file name
     }
   });
+
+
+
+
   const upload = multer({ storage});
+
   app.post('/upload', upload.single('file'),async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded' });
@@ -50,6 +58,10 @@ const storage = multer.diskStorage({
     //     const newMaterial=new materialModel({courseId,filePath});
     //     await newMaterial.save();
     // }
+
+
+
+
     const existingMaterial = await materialModel.findOne({ courseId: courseId,staffId:staffId, filePath: filePath });
 
     if (existingMaterial) {
@@ -62,6 +74,11 @@ const storage = multer.diskStorage({
     
     res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename, courseId,staffId });
 });
+
+
+
+
+
 app.get('/materials',async(req,res)=>{
     const { courseId, staffId } = req.query;
 
@@ -73,6 +90,21 @@ app.get('/materials',async(req,res)=>{
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+app.get('/studmaterials',async(req,res)=>{
+    const { courseId, staffId } = req.query;
+
+    try {
+        const materials = await materialModel.find({ courseId: courseId, staffId:staffId });
+        res.json(materials);
+    } catch (error) {
+        console.error('Error fetching materials:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 
 app.get('/material-content', (req, res) => {
     const { filePath } = req.query;
@@ -107,6 +139,10 @@ app.get('/material-content', (req, res) => {
     });
 });
 
+
+
+
+
 // Function to determine content type based on file extension
 function getContentType(filePath) {
     const extname = path.extname(filePath);
@@ -129,32 +165,10 @@ function getContentType(filePath) {
     }
 }
 
-// app.get('/material-content', (req, res) => {
-//     const { filePath } = req.query;
 
-//     // Check if filePath is provided
-//     if (!filePath) {
-//         return res.status(400).json({ error: 'File path is required' });
-//     }
 
-//     // Construct the absolute path to the file
-//     const absoluteFilePath = path.join(__dirname, filePath);
-//     console.log(absoluteFilePath);
-//     // Check if the file exists
-//     if (!fs.existsSync(absoluteFilePath)) {
-//         return res.status(404).json({ error: 'File not found' });
-//     }
 
-//     // Read the content of the file
-//     fs.readFile(absoluteFilePath, (err, data) => {
-//         if (err) {
-//             return res.status(500).json({ error: 'Failed to read file' });
-//         }
-//         res.setHeader('Content-Type', 'image/jpeg');
-//         // Send the file content as the response
-//         res.status(200).send(data);
-//     });
-// });
+
 
 app.post('/register', (req, res) => {
     const { name, email, password, role } = req.body;

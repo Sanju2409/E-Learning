@@ -21,7 +21,7 @@ import Navigation from './Navbar.jsx';
 import Footer from './footer.jsx';
 import Studviewcourse from './Studviewcourse.jsx';
 import Announcements from './Announcements.jsx';
-
+import StudViewMaterials from './Stud_view_materials.jsx';
 import UploadMaterialPage from './AddMaterial.jsx';
 import AddStudent from './AddStudent.jsx';
 import View from './view.jsx'
@@ -56,7 +56,7 @@ function App() {
           <Route path="/AddStudentToCourse" element={<AddStudent/>}/>
           <Route path="/View" element={<View/>}/>
          
-          
+          <Route path="/Stud_view_materials" element={<StudViewMaterials/>}/>
         </Routes>
       
     </Router>

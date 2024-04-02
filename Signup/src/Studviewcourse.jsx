@@ -92,9 +92,11 @@ const location = useLocation();
                 console.error('Error fetching student courses:', error);
             }
         };
-
+        
         fetchStudentCourses();
+        
     }, [userEmail]);
+
 
     return (
         <div className="viewcoursediv vh-100">
@@ -130,7 +132,11 @@ const location = useLocation();
                                 <h3 className="course-title">{course.courseId}</h3>
                                 {/* <p className="course-description">Instructor: {course.instructor}</p>
                                 <p className="course-description">Students Enrolled: {course.StudentsEnrolled}</p> */}
-                                <button className="view-button" onClick={() => handleView(course)}>View</button>
+                                {/* <button className="view-button" type="button" onClick={() => handleViewMaterials(course.courseId)}>View Materials</button> */}
+                                <Link to="/Stud_view_materials" style={{textDecoration:'none',color:'inherit'}}  state={{ userEmail, courseId:course.courseId,staffId:course.staffId}} className="view-button">
+                                {/* <Link to={{ pathname: "/Stud_view_materials", state: { courseId: course.courseId } }} className="view-button"> */}
+                                View Materials
+                                </Link>
                             </div>
                         </div>
                     ))}
