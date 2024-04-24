@@ -347,7 +347,7 @@
 
 
 
-import React, { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
 import { Card, Button, Form, Alert, Container, Row, Col } from "react-bootstrap";
 import avatar from "./assets/avatar1.png";
@@ -363,7 +363,7 @@ const Profiles = () => {
   // const handleInputChange = (e) => {
   //   setFormData({ ...formData, [e.target.name]: e.target.value });
   // };
-
+setErrors("");
   const handlePasswordChange = async () => {
     try {
       console.log("useremail",email);

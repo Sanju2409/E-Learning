@@ -2,6 +2,7 @@
 //import Footer from './footer';
 import './home.css';
 import Navigation from './Navbar';
+import About from './About';
 
 const Home = () => {
     return (
@@ -19,7 +20,8 @@ const Home = () => {
 
             </div>
 
-        </div></div>
+        </div>
+        <><About/></></div>
 
 
     );

@@ -54,6 +54,9 @@ function ViewCourse() {
     const handleView = () => {
         //     console.log("View course details")
     };
+    const handleQuiz=()=>{
+        
+    }
 
     return (
         <div className="viewcoursediv vh-100" >
@@ -84,19 +87,20 @@ function ViewCourse() {
                 </div>
             </nav>
             <div className="course-list " style={{ marginTop: '100px' }}>
-                <h2 className="course-list-title">Course List:</h2>
+                <h2 className="course-list-title " >Course List:</h2>
                 <table className="table table-bordered table-striped">
                     <thead className="thead-light">
                         <tr>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Course Name</th>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Course Id</th>
-                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Number of Students</th>
+                            
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Add Student</th>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>
-                                <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }}>Add Material</Link>
+                                <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit',fontWeight:'bold' }}>Add Material</Link>
                             </th>
-                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>
-                                <Link to="/view" style={{textDecoration:'none',color:'inherit'}}>View</Link></th>
+                            <th style={{ backgroundColor: '#C6DBEF', color: 'black'  }}>
+                                <Link to="/view" style={{textDecoration:'none',color:'inherit',fontWeight: 'bold'}}>View</Link></th>
+                                <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Cerate quiz</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,7 +108,7 @@ function ViewCourse() {
                             <tr style={{ backgroundColor: '#4177a2' }} key={course.courseId}>
                                 <td>{course.courseName}</td>
                                 <td>{course.courseId}</td>
-                                <td>{course.numberOfStudents}</td>
+                                
                                 <td>
                                     {/* <select onChange={(e) => handleAddStudent(course.courseId, e.target.value)}>
                                         <option value="">Select Student</option>
@@ -129,6 +133,13 @@ function ViewCourse() {
                                     <button style={{ backgroundColor: '#105750', marginLeft: '10px' }} onClick={() => handleView(course.courseId)}>View</button>
                                     </Link>
                                 </td>
+                               
+                                <td>
+                                    <Link to="/QuizCreate" style={{textDecoration:'none',color:'inherit'}} state={{userEmail,staffId:staffId,courseId:course.courseId}}>
+                                        <button style={{backgroundColor:'#105750',marginLeft:'10px'}} onClick={()=>handleQuiz(course.courseId,staffId)}>Create Quiz</button>
+                                    </Link>
+                                </td>
+                                
                             </tr>
                         ))}
                         {/* {courses.map((course) => (

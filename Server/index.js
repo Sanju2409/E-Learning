@@ -12,6 +12,8 @@ const materialModel = require('./models/storeMaterials')
 
 const path = require('path');
 const fs = require('fs');
+const QuizCreateModel = require('./models/QuizCreate')
+const EventModel=require('./models/Meeting')
 
 
 const app = express()
@@ -90,7 +92,138 @@ app.get('/materials',async(req,res)=>{
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.get('/getquizstudent',async(req,res)=>{
+    const {courseId,staffId}=req.query;
+    try{
+        const questions=await QuizCreateModel.findOne({courseId:courseId,staffId:staffId});
+        res.json(questions);
+    }catch(error){
+        console.error('Error fetching questions:', error);
+        res.status(500).json({ error: 'Internal server error' });
 
+    }
+})
+// app.post('/student-answer-quiz',async(req,res)=>{
+//     const studentAnswers = req.body;
+
+//     // Simulate evaluating the answers
+//     const results = QuizCreateModel.map(question => {
+//         const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//         return { questionId: question._id, isCorrect };
+// }
+// )
+// }
+// )
+// app.post('/student-answer-quiz', async (req, res) => {
+//     const studentAnswers = req.body;
+
+//     // Simulate evaluating the answers
+//     const results = QuizCreateModel.map(quiz => {
+//         return quiz.questions.map(question => {
+//             const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//             return { questionId: question._id, isCorrect };
+//         });
+//     }).reduce((acc, val) => acc.concat(val), []);
+
+//     res.json(results);
+// });
+// app.post('/student-answer-quiz', async (req, res) => {
+//     const studentAnswers = req.body;
+
+//     try {
+//         // Fetch the quiz from the database based on courseId and staffId
+//         const { courseId, staffId } = studentAnswers;
+//         const quiz = await QuizCreateModel.findOne({ courseId, staffId });
+
+//         if (!quiz) {
+//             return res.status(404).json({ error: 'Quiz not found' });
+//         }
+
+//         // Compare student answers with correct answers
+//         const results = quiz.questions.map(question => {
+//             const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//             return { questionId: question._id, isCorrect };
+//         });
+
+//         res.json(results);
+//     } catch (error) {
+//         console.error('Error verifying student answers:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// });
+// app.post('/student-answer-quiz', async (req, res) => {
+//     // Your logic to handle the student's answers
+//     const studentAnswers = req.body;
+    
+//     console.log(studentAnswers)
+//     try {
+//         // Fetch the quiz from the database based on courseId and staffId
+//         const { courseId, staffId } = studentAnswers;
+//         const quiz = await QuizCreateModel.findOne({ courseId, staffId });
+
+//         if (!quiz) {
+//             return res.status(404).json({ error: 'Quiz not found' });
+//         }
+//         else{
+//             const results = quiz.questions.map(question => {
+//                         const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//                         return { questionId: question._id, isCorrect };
+//                     });
+//                     res.json(results);
+//         }
+
+//     //     // Compare student answers with correct answers
+//     //     const results = quiz.questions.map(question => {
+//     //         const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//     //         return { questionId: question._id, isCorrect };
+//     //     });
+
+        
+//     } catch (error) {
+//         console.error('Error verifying student answers:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+//     return true;
+//   });
+app.post('/student-answer-quiz', async (req, res) => {
+    // Extract studentAnswers and other required data from the request body
+    const { answers, courseId, staffId } = req.body;
+   
+    
+    try {
+        // Fetch the quiz from the database based on courseId and staffId
+        const quiz = await QuizCreateModel.findOne({ courseId, staffId });
+
+        if (!quiz) {
+            return res.status(404).json({ error: 'Quiz not found' });
+        }
+
+        // Compare student answers with correct answers
+     let correctcount=0;
+        const results = quiz.questions.map(question => {
+            const isCorrect = answers[question._id] === question.correctAnswerIndex;
+            if(isCorrect){
+                correctcount++;
+            }
+            return { questionId: question._id, isCorrect };
+        });
+        const totalnoofquestions=quiz.questions.length;
+        const percentage=(correctcount/totalnoofquestions*100);
+        
+
+        const response={
+         
+            percentage,
+            totalnoofquestions,
+            correctcount
+
+        }
+        res.json(response);
+    } catch (error) {
+        console.error('Error verifying student answers:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.get('/studmaterials',async(req,res)=>{
     const { courseId, staffId } = req.query;
@@ -379,6 +512,17 @@ app.delete('/removestudentfromcourse',async(req,res)=>{
     }
 });
 
+//create quiz
+app.post('/createquiz',async(req,res)=>{
+    try{
+        const quiz=QuizCreateModel.create(req.body);
+        res.json("Succesfull creation of quiz");
+        console.log(req.body);
+    }
+    catch(err){
+        res.json("Failed to create quiz");
+    }
+});
 
 
 
@@ -482,5 +626,80 @@ app.post('/change-password', async (req, res) => {
       console.error('Error changing password:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
+  });
+  
+//schedule
+// app.post('/add-event/:staffId', async (req, res) => {
+//     try {
+//       const { title, description, startTime, endTime } = req.body;
+//       const { staffId } = req.params;
+  
+//       // Create a new event object
+//       const event = new EventModel({
+//         title,
+//         description,
+//         startTime,
+//         endTime,
+//         staffId
+//       });
+  
+//       // Save the event to the database
+//       await event.save();
+  
+//       res.json({ success: true, message: 'Event added successfully' });
+//     } catch (error) {
+//       console.error('Error adding event:', error);
+//       res.status(500).json({ success: false, message: 'Failed to add event' });
+//     }
+//   });
+  
+//   // Route to fetch events for a specific staff member
+//   app.get('/events/:staffId', async (req, res) => {
+//     try {
+//       const { staffId } = req.params;
+  
+//       // Fetch events for the specified staffId
+//       const events = await EventModel.find({ staffId });
+  
+//       res.json({ success: true, events });
+//     } catch (error) {
+//       console.error('Error fetching events:', error);
+//       res.status(500).json({ success: false, message: 'Failed to fetch events' });
+//     }
+//   });
+
+//schedule2
+app.post('/meeting', (req, res) => {
+    const { staffId } = req.query;
+    const { date, time, info } = req.body;
+    
+    const newMeeting = new Meeting({
+      staffId,
+      date,
+      time,
+      info,
+    });
+  
+    newMeeting.save()
+      .then(() => {
+        res.status(201).send('Meeting added successfully');
+      })
+      .catch((err) => {
+        console.error('Error adding meeting:', err);
+        res.status(500).send('Error adding meeting');
+      });
+  });
+  
+  app.get('/meetingfetch', (req, res) => {
+    const { staffId } = req.query;
+  
+    Meeting.find({ staffId })
+      .then((meetings) => {
+        res.json({ meetings });
+      })
+      .catch((err) => {
+        console.error('Error fetching meetings:', err);
+        res.status(500).send('Error fetching meetings');
+      });
   });
   

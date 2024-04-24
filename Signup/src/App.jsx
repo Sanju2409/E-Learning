@@ -25,6 +25,13 @@ import StudViewMaterials from './Stud_view_materials.jsx';
 import UploadMaterialPage from './AddMaterial.jsx';
 import AddStudent from './AddStudent.jsx';
 import View from './view.jsx'
+import About from './About.jsx';
+import QuizForm from './QuizCreate.jsx'
+import JoinScreen  from './JoinScreen.jsx';
+import QuizPage from './QuizAttempt.jsx';
+import QuizStudent from './Quiz-Student.jsx';
+// import QuizAttempts from './QuizAttempts.jsx';
+
 function App() {
   return (
   
@@ -37,7 +44,7 @@ function App() {
        
           
           <Route path="/home" element={<Home />} />
-          
+          <Route path="/About" element={<About/>}/>
   
           <Route path="/footer" element={<Footer />} />
           <Route path="/Addstaff" element={<AddStaff/>} />
@@ -57,6 +64,10 @@ function App() {
           <Route path="/View" element={<View/>}/>
          
           <Route path="/Stud_view_materials" element={<StudViewMaterials/>}/>
+          <Route path='/QuizCreate' element={<QuizForm/>}/>
+          <Route path='/JoinScreen' element={<JoinScreen/>}/>
+          <Route path='/QuizPage' element={<QuizPage/>}/>
+          <Route path='/QuizStudent' element={<QuizStudent/>}/>
         </Routes>
       
     </Router>

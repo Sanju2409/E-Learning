@@ -1,0 +1,74 @@
+.quiz-form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.question-container {
+    margin-bottom: 40px;
+}
+
+.option-container {
+    margin-left: 20px;
+}
+
+.correct-answer-container {
+    margin-top: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+.bgc{
+
+    margin: 0;
+    padding: 0;
+    background: rgb(105,144,194);
+background: linear-gradient(90deg, rgba(105,144,194,1) 0%, rgba(34,190,200,1) 21%, rgba(128,149,231,1) 88%);
+    /* background: linear-gradient(to right, #E4F3E3, #5CA9E9); */
+    /* Add additional CSS properties as needed */
+  /* * Just for demonstration */ 
+    /* background: #7062F0; */
+    /* background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,81,253,1) 100%); */
+
+
+    
+    background-size: cover; /* This property ensures that the background image covers the entire body */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents the background image from repeating */
+   }
+   .container-div {
+    /* background: #FFE5B4; */
+    /* background: rgba(255, 255, 255, 0.8);  */
+    /* Adjust the alpha value (0.8) to set the transparency level */
+  }
+ .form-control{
+    background-color: #b6d4f7;
+ }
+ .heading-quiz{
+    color: #fff;
+ }
+ .container-div{
+    max-width: 500px;
+    max-height: 700px;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+ }
