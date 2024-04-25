@@ -30,6 +30,8 @@ import QuizForm from './QuizCreate.jsx'
 import JoinScreen  from './JoinScreen.jsx';
 import QuizPage from './QuizAttempt.jsx';
 import QuizStudent from './Quiz-Student.jsx';
+import GradeView from './GradeView.jsx';
+import GradeViewByStaff from './GradeViewByStaff.jsx';
 // import QuizAttempts from './QuizAttempts.jsx';
 
 function App() {
@@ -68,6 +70,8 @@ function App() {
           <Route path='/JoinScreen' element={<JoinScreen/>}/>
           <Route path='/QuizPage' element={<QuizPage/>}/>
           <Route path='/QuizStudent' element={<QuizStudent/>}/>
+          <Route path='/Grades' element={<GradeView/>}/>
+          <Route path='/GradeViewByStaff' element={<GradeViewByStaff/>}/>
         </Routes>
       
     </Router>

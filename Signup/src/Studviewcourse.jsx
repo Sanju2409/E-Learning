@@ -29,6 +29,7 @@ function Studviewcourse() {
 
 
     return (
+        <div className="viewcoursediv1">
         <div className="viewcoursediv vh-100">
             <nav className="navbarstaff justify-content-space-between fixed-top">
                 <div className="container-fluid d-flex justify-content-between">
@@ -53,7 +54,7 @@ function Studviewcourse() {
                     </div>
                 </div>
             </nav>
-            <div className="course-list" style={{ marginTop: '100px' }}>
+            <div className="course-list" style={{ marginTop: '70px' }}>
                 <h2 className="course-list-title">Course List</h2>
                 <div className="course-cards-container">
                     {studentCourses.map((course) => (
@@ -68,13 +69,15 @@ function Studviewcourse() {
                                     View Materials<br></br>
                                 </Link>
                                 <Link to="/QuizStudent" style={{textDecoration:'none',color: '#000'}}  state={{ userEmail, courseId: course.courseId, staffId: course.staffId }} className="view-button">
-                                    Attempt task now
+                                    Attempt task now<br></br>
                                 </Link>
+                                <Link to="/Grades" style={{textDecoration:'none', color:'#000'}} state={{userEmail,courseId:course.courseId,staffId:course.staffId}} className="view-button">Grades</Link>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
+        </div>
         </div>
     );
 }

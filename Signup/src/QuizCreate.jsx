@@ -61,7 +61,7 @@ const QuizForm = () => {
   };
 
   return (
-    <div className="container-fluid mb-4 bgc">
+    <div className="container-fluid mb-4 createfinal">
         <h1 className='row justify-content-center heading-quiz' >Create Quiz</h1>
       <div className=" row justify-content-center vh-100  ">
         <div className="col-md-4 vh-40">

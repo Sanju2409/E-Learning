@@ -86,8 +86,9 @@ function ViewCourse() {
 
                 </div>
             </nav>
-            <div className="course-list " style={{ marginTop: '100px' }}>
-                <h2 className="course-list-title " >Course List:</h2>
+            <div className="course-list " style={{ marginTop: '70px' }}>
+                <br></br>
+                <h2 className="course-list-title"   >Course List:</h2>
                 <table className="table table-bordered table-striped">
                     <thead className="thead-light">
                         <tr>
@@ -99,8 +100,12 @@ function ViewCourse() {
                                 <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit',fontWeight:'bold' }}>Add Material</Link>
                             </th>
                             <th style={{ backgroundColor: '#C6DBEF', color: 'black'  }}>
-                                <Link to="/view" style={{textDecoration:'none',color:'inherit',fontWeight: 'bold'}}>View</Link></th>
-                                <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Cerate quiz</th>
+                                <Link to="/view" style={{textDecoration:'none',color:'inherit',fontWeight: 'bold'}}>View</Link>
+                            </th>
+                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>Cerate quiz</th>
+                            <th style={{ backgroundColor: '#C6DBEF', color: 'black', fontWeight: 'bold' }}>View Grade</th>
+                                
+                                
                         </tr>
                     </thead>
                     <tbody>
@@ -119,24 +124,30 @@ function ViewCourse() {
                                         ))}
                                     </select> */}
                                     <Link to="/AddStudentToCourse" style={{ textDecoration: 'none', color: 'inherit' }} state={{ userEmail, staffId: staffId,courseId:course.courseId}}>
-                                        <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddStudent(course.courseId)}>Add Student</button>
+                                        <button style={{ backgroundColor: '#318CE7', marginLeft: '10px' }} onClick={() => handleAddStudent(course.courseId)}>Add Student</button>
                                     </Link>
                                 </td>
                                 <td>
                                     <Link to="/addMaterial" style={{ textDecoration: 'none', color: 'inherit' }} state={{ userEmail, staffId: staffId,courseId:course.courseId}}>
-                                        <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button>
+                                        <button style={{ backgroundColor: '#005A9C', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button>
                                     </Link>
                                     {/* <button style={{ backgroundColor: '#4177a2', marginLeft: '10px' }} onClick={() => handleAddMaterial(course.courseId)}>Add Material</button> */}
                                 </td>
                                 <td>
                                 <Link to="/view" style={{textDecoration:'none',color:'inherit'}}  state={{ userEmail, staffId: staffId,courseId:course.courseId}}>
-                                    <button style={{ backgroundColor: '#105750', marginLeft: '10px' }} onClick={() => handleView(course.courseId)}>View</button>
+                                    <button style={{ backgroundColor: '#082567', marginLeft: '10px' }} onClick={() => handleView(course.courseId)}>View</button>
                                     </Link>
                                 </td>
                                
                                 <td>
                                     <Link to="/QuizCreate" style={{textDecoration:'none',color:'inherit'}} state={{userEmail,staffId:staffId,courseId:course.courseId}}>
-                                        <button style={{backgroundColor:'#105750',marginLeft:'10px'}} onClick={()=>handleQuiz(course.courseId,staffId)}>Create Quiz</button>
+                                        <button style={{backgroundColor:'#1D428A',marginLeft:'10px'}} onClick={()=>handleQuiz(course.courseId,staffId)}>Create Quiz</button>
+                                    </Link>
+                                </td>
+
+                                <td>
+                                    <Link to="/GradeViewByStaff" style={{textDecoration:'none',color:'inherit'}} state={{userEmail,staffId:staffId,courseId:course.courseId}}>
+                                        <button style={{backgroundColor:'#105750',marginLeft:'10px'}} onClick={()=>handleQuiz(course.courseId,staffId)}>View Grade</button>
                                     </Link>
                                 </td>
                                 

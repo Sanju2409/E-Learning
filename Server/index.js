@@ -9,7 +9,7 @@ const CourseModel = require('./models/Courses')
 const multer = require('multer');
 const StudentCourseModel = require('./models/StudentsInCourse')
 const materialModel = require('./models/storeMaterials')
-
+const Grade=require('./models/Grade')
 const path = require('path');
 const fs = require('fs');
 const QuizCreateModel = require('./models/QuizCreate')
@@ -77,7 +77,9 @@ const storage = multer.diskStorage({
     res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename, courseId,staffId });
 });
 
+app.post('/viewgrades',async(req,res)=>{
 
+})
 
 
 
@@ -224,7 +226,47 @@ app.post('/student-answer-quiz', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.post('/student-submit-quiz',async(req,res)=>{
 
+    const{grade,percentage,totalnoofquestions,courseId,staffId,studentId}=req.body;
+    try{
+        Grade.create({grade:grade,percentage:percentage,courseId:courseId,staffId:staffId,studentId:studentId,totalnoofquestions:totalnoofquestions,})
+    }
+    catch(error){
+        console.log("Error storing gardes",error);
+    }
+})
+app.get('/checkattempted',async(req,res)=>{
+    const {studentId,courseId}=req.query;
+    try{
+        const quizgrades=await Grade.find({studentId:studentId,courseId:courseId});
+        const attempted = quizgrades.length > 0;
+        res.json({ attempted: attempted });
+    }
+    catch(error){
+        console.error('Error fetching quiz grade to display',error);
+    }
+})
+app.get('/fetchquizgrade',async(req,res)=>{
+    const {studentId,courseId}=req.query;
+    try{
+        const quizgrades=await Grade.find({studentId:studentId,courseId:courseId});
+        res.json(quizgrades);
+    }
+    catch(error){
+        console.error('Error fetching quiz grade to display',error);
+    }
+})
+app.get('/fetchstudentgradeforstaff',async(req,res)=>{
+    const {staffId,courseId}=req.query;
+    try{
+        const studentgrade=await Grade.find({staffId:staffId,courseId:courseId});
+        res.json(studentgrade);
+    }
+    catch(error){
+        console.error('Error fetching student grade to display',error);
+    }
+})
 app.get('/studmaterials',async(req,res)=>{
     const { courseId, staffId } = req.query;
 
