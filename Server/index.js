@@ -552,18 +552,23 @@ app.post('/login', (req, res) => {
     RegisterModel.findOne({ email: email })
         .then(user => {
             if (user) {
+                // Check if the user is verified
+                if (!user.verified) {
+                    return res.json({ error: "Email not verified" });
+                }
+
                 bcrypt.compare(password, user.password, (err, result) => {
                     if (err) {
                         return res.json({ error: "Internal Server Error" });
                     }
                     if (result) {
                         // Passwords match
-                        const token = jwt.sign({ email: req.body.email, role: req.body.role,staffId:user._id }, "jwt-access-key", { expiresIn: '60m' });
+                        const token = jwt.sign({ email: req.body.email, role: req.body.role, staffId: user._id }, "jwt-access-key", { expiresIn: '60m' });
                         const refreshtoken = jwt.sign({ email: req.body.email, role: req.body.role }, "jwt-refresh-key", { expiresIn: '60m' });
                         res.cookie('token', token, { httpOnly: true }, { maxAge: 60000 });
                         res.cookie('refreshtoken', refreshtoken, { httpOnly: true, maxAge: 60000, secure: true, sameSite: 'strict' });
                         
-                        return res.json({ status: "Success", role: user.role,staffId:user._id });
+                        return res.json({ status: "Success", role: user.role, staffId: user._id,verified:true });
                     } else {
                         // Passwords don't match
                         return res.json({ error: "Incorrect password" });
@@ -578,6 +583,39 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ error: "Internal Server Error" });
         });
 });
+
+
+// app.post('/login', (req, res) => {
+//     const { email, password } = req.body;
+//     RegisterModel.findOne({ email: email })
+//         .then(user => {
+//             if (user) {
+//                 bcrypt.compare(password, user.password, (err, result) => {
+//                     if (err) {
+//                         return res.json({ error: "Internal Server Error" });
+//                     }
+//                     if (result) {
+//                         // Passwords match
+//                         const token = jwt.sign({ email: req.body.email, role: req.body.role,staffId:user._id }, "jwt-access-key", { expiresIn: '60m' });
+//                         const refreshtoken = jwt.sign({ email: req.body.email, role: req.body.role }, "jwt-refresh-key", { expiresIn: '60m' });
+//                         res.cookie('token', token, { httpOnly: true }, { maxAge: 60000 });
+//                         res.cookie('refreshtoken', refreshtoken, { httpOnly: true, maxAge: 60000, secure: true, sameSite: 'strict' });
+                        
+//                         return res.json({ status: "Success", role: user.role,staffId:user._id });
+//                     } else {
+//                         // Passwords don't match
+//                         return res.json({ error: "Incorrect password" });
+//                     }
+//                 });
+//             } else {
+//                 return res.json({ error: "No record existed" });
+//             }
+//         })
+//         .catch(err => {
+//             console.error("Error:", err);
+//             return res.status(500).json({ error: "Internal Server Error" });
+//         });
+// });
 
 app.post('/Staff-Dashboard',(req,res)=>{
 
