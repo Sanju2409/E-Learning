@@ -495,4 +495,13 @@ background-color: #d8f5ff;
       background-color: #d8f5ff;
     }
   
-    
+    .error_msg,.success_msg{
+      width:370px;
+      padding:15px;
+      background-color: #cf1834;
+      color:#fff;
+
+    }
+    .success_msg{
+      background-color: #1e5410;
+    }

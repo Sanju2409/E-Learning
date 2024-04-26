@@ -14,8 +14,9 @@ const path = require('path');
 const fs = require('fs');
 const QuizCreateModel = require('./models/QuizCreate')
 const EventModel=require('./models/Meeting')
-
-
+const Token=require('./models/token')
+const sendEmail=require('./sendEmail')
+const crypto=require('crypto')
 const app = express()
 
 app.use(cors({
@@ -342,33 +343,185 @@ function getContentType(filePath) {
 
 
 
-
-
-
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
     const { name, email, password, role } = req.body;
 
-    RegisterModel.findOne({ email: email })
-        .then(user => {
-            if (user) {
-                res.json("Already have an account")
-            }
-            else {
-                bcrypt.hash(password, 10)
-                    .then(hash => {
-                        RegisterModel.create({ name: name, email: email, password: hash, role: role })
-                            .then(result => res.json("Account created"))
+    try {
+        let user = await RegisterModel.findOne({ email: email });
+        if (user) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user = await RegisterModel.create({ name, email, password: hashedPassword, role });
+
+        const token = await new Token({
+            userId: user._id,
+            token: crypto.randomBytes(32).toString("hex")
+        }).save();
+
+        console.log("User id:",user._id);
+        console.log("User token:",token.token);
+        const url = `http://localhost:3001/registerss/${user._id}/verify/${token.token}`;
+        await sendEmail(user.email, "Verify email", url);
+        res.status(201).json({ message: "An email has been sent to your account. Please verify" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
 
 
-                            .catch(err => res.json(err))
 
-                    }
+// app.post('/register', async (req, res) => {
+//     const { name, email, password, role } = req.body;
 
-                    ).catch(err => res.json(err))
-           }
-        })
+//     try {
+//         let user = await RegisterModel.findOne({ email: email });
+//         if (user) {
+//             return res.json("Already have an account");
+//         }
 
-})
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         user = (await RegisterModel.create({ name: name, email: email, password: hashedPassword, role: role })).save();
+
+//         const token = await new Token({
+//             userId: user._id,
+//             token: crypto.randomBytes(32).toString("hex")
+//         }).save();
+
+//         const url = `http://localhost:3001/register/${user._id}/verify/${token.token}`;
+//         await sendEmail(user.email, "Verify email", url);
+//         res.status(201).send({message:"An email send to your account please verify"});
+//         // res.json("Account created");
+//     } catch (error) {
+//         console.error(error);
+//         res.json(error);
+//     }
+// });
+// app.get("/:id/verify/:token",async(req,res)=>{
+//    try{
+//     console.log("ID:", req.params.id);
+//     console.log("Token:", req.params.token);
+//     const user=await RegisterModel.findOne({_id:req.params.id});
+//     if(!user) return res.status(400).send({message:"Invalid link"});
+
+//     const token=await Token.findOne({
+//         userId:user._id,
+//         token:req.params.token
+//     });
+//     if(!token) return res.status(400).send({message:"Invalid link"});
+//     await RegisterModel.updateOne({_id:user._id},{verified:true});
+//     await token.remove()
+//     res.status(200).send({message:'Email verified succesfully'})
+//    } catch(error){
+//         console.log("Internal server error",error);
+//    }
+// });
+// app.get("/registerss/:id/verify/:token", async (req, res) => {
+//     // Route logic remains the same
+//     try {
+//         console.log("ID:", req.params.id);
+//         console.log("Token:", req.params.token);
+//         const user = await RegisterModel.findOne({ _id: req.params.id });
+//         if (!user) return res.status(400).send({ message: "Invalid link" });
+
+//         const token = await Token.findOne({
+//             userId: user._id,
+//             token: req.params.token
+//         });
+//         if (!token) return res.status(400).send({ message: "Invalid link" });
+
+//         await RegisterModel.updateOne({ _id: user._id }, { verified: true });
+//         // await token.remove();
+//         res.status(200).send({ message: 'Email verified successfully' });
+//     } catch (error) {
+//         console.log("Internal server error", error);
+//         res.status(500).send({ message: "Internal server error" });
+//     }
+// });
+
+// app.get("/registerss/:id/verify/:token", async (req, res) => {
+//     // Route logic remains the same
+//     try {
+//         console.log("ID:", req.params.id);
+//         console.log("Token:", req.params.token);
+//         const user = await RegisterModel.findOne({ _id: req.params.id });
+//         if (!user) return res.status(400).send({ message: "Invalid link user" });
+
+//         const token = await Token.findOne({
+//             userId: user._id,
+//             token: req.params.token
+//         });
+//         if (!token) return res.status(400).send({ message: "Invalid link" });
+
+//         await RegisterModel.updateOne({ _id: user._id }, { verified: true });
+//         // res.json({id:token.userId,token:token.token});
+//         // res.send({id:token.userId,token:token.token});
+//         // Send JSON response with success message and login URL
+//         res.status(200).json({
+//             message: 'Email verified successfully',
+//             loginUrl: 'http://localhost:5173/login' // Change this URL to your login page URL
+//         });
+//     } catch (error) {
+//         console.log("Internal server error", error);
+//         res.status(500).send({ message: "Internal server error" });
+//     }
+// });
+app.get("/registerss/:id/verify/:token", async (req, res) => {
+    try {
+        console.log("ID:", req.params.id);
+        console.log("Token:", req.params.token);
+        const user = await RegisterModel.findOne({ _id: req.params.id });
+        if (!user) return res.status(400).send({ message: "Invalid link user" });
+
+        const token = await Token.findOne({
+            userId: user._id,
+            token: req.params.token
+        });
+        if (!token) return res.status(400).send({ message: "Invalid link" });
+
+        await RegisterModel.updateOne({ _id: user._id }, { verified: true });
+
+        // Redirect to the email verification page
+        res.redirect(`http://localhost:5173/registerss/${req.params.id}/verify/${req.params.token}`);
+    } catch (error) {
+        console.log("Internal server error", error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+});
+
+// app.post('/register', async (req, res) => {
+//     const { name, email, password, role } = req.body;
+//     try{
+
+//     }
+//     RegisterModel.findOne({ email: email })
+//         .then(user => {
+//             if (user) {
+//                 res.json("Already have an account")
+//             }
+//             else {
+//                 bcrypt.hash(password, 10)
+//                     .then(hash => {
+//                         user=RegisterModel.create({ name: name, email: email, password: hash, role: role })
+//                             .then(result => res.json("Account created"))
+
+
+                            
+//                         const token=await new Token({
+//                             userId:user._id,
+//                             token:crypto.randomBytes(32).toString("hex")
+//                         }).save();
+//                         const url='http://localhost:3001/users/{user._id}/verify/{token.token}';
+//                         await sendEmail(user.email,"Verigy email",url);
+//                     }
+
+//                     ).catch(err => res.json(err))
+//            }
+//         })
+
+// })
 app.post('/addstaff', (req, res) => {
     const { name, email, password, role } = req.body;
 

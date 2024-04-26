@@ -32,14 +32,22 @@ import QuizPage from './QuizAttempt.jsx';
 import QuizStudent from './Quiz-Student.jsx';
 import GradeView from './GradeView.jsx';
 import GradeViewByStaff from './GradeViewByStaff.jsx';
+import EmailVerify from './EmailVerify.jsx';
+// import EmailVerify from './EmailVerify.jsx';
 // import QuizAttempts from './QuizAttempts.jsx';
-
+// import EmailVerify from './EmailVerify.jsx'
 function App() {
+  // const user=localStorage.getItem("token");
   return (
   
     <Router>
     
         <Routes>
+        <Route path="/registerss/:id/verify/:token" element={<EmailVerify/>}/>
+        {/* <Route path="/registerss/:id/verify/:token" element={<EmailVerify />} /> */}
+
+
+          {/* <Route path="/EmailVerify" element={<EmailVerify/>}/> */}
         <Route path="/Navbar" element={<Navigation/>} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />

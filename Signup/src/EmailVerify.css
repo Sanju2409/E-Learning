@@ -1,0 +1,34 @@
+.email-verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .email-verify-content {
+    text-align: center;
+  }
+  
+  .email-verify-message {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .email-verify-proceed-message {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .email-verify-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .email-verify-button:hover {
+    background-color: #45a049;
+  }
