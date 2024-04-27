@@ -4,7 +4,6 @@ import axios from "axios";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 const Signup = () => {
  //const [role, setRole] = useState("");
   const [name, setName] = useState("");
@@ -18,6 +17,14 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Check if email matches the pattern
+    if (!emailPattern.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+  
 
     try {
       const response = await axios.post("http://localhost:3001/register", {
@@ -28,6 +35,7 @@ const Signup = () => {
       });
 
       console.log(response);
+      
       alert("Created");
       navigate("/login");
     } catch (err) {

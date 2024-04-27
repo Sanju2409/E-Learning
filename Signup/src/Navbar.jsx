@@ -16,9 +16,9 @@ const Navigation = () => {
         
         <ul>
           <li href="#">Menu</li> 
-          <li href="#">Location</li>
+          {/* <li href="#">Location</li> */}
           <li href="#">About</li>
-          <li href="#">Contact</li>
+          <li href="#">Help</li>
         </ul>
   
          <button onClick={handleLoginClick}>login</button>

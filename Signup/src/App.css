@@ -355,3 +355,137 @@ transition: color 0.3s;
 .read-the-docs {
   color: #888;
 }
+/*quiz*/
+/* .quiz-form-container {
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.question-input-container,
+.answer-choices-container,
+.quiz-settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.answer-choice-input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.correct-answer-indicator {
+  background-color: green;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.time-limit-container,
+.passing-score-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+} */
+.quiz-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.question-input-container,
+.answer-choices-container,
+.correct-answer-container,
+.quiz-settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.answer-choice-input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.correct-answer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+select {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.time-limit-container,
+.passing-score-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.add-choice-button {
+  align-self: center;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-actions-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}

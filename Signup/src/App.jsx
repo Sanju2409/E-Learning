@@ -24,7 +24,8 @@ import Announcements from './Announcements.jsx';
 import StudViewMaterials from './Stud_view_materials.jsx';
 import UploadMaterialPage from './AddMaterial.jsx';
 import AddStudent from './AddStudent.jsx';
-import View from './view.jsx'
+import View from './view.jsx';
+import QuizForm from './Quiz.jsx';
 function App() {
   return (
   
@@ -37,7 +38,7 @@ function App() {
        
           
           <Route path="/home" element={<Home />} />
-          
+          <Route path="/Quiz" element={<QuizForm />} />
   
           <Route path="/footer" element={<Footer />} />
           <Route path="/Addstaff" element={<AddStaff/>} />

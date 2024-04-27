@@ -9,7 +9,7 @@ const CourseModel = require('./models/Courses')
 const multer = require('multer');
 const StudentCourseModel = require('./models/StudentsInCourse')
 const materialModel = require('./models/storeMaterials')
-
+const nodemailer = require("nodemailer");
 const path = require('path');
 const fs = require('fs');
 
@@ -172,7 +172,7 @@ function getContentType(filePath) {
 
 app.post('/register', (req, res) => {
     const { name, email, password, role } = req.body;
-
+    
     RegisterModel.findOne({ email: email })
         .then(user => {
             if (user) {
@@ -190,7 +190,9 @@ app.post('/register', (req, res) => {
                     }
 
                     ).catch(err => res.json(err))
+                    sendWelcomeEmail(email);   
            }
+           
         })
 
 })
@@ -251,6 +253,33 @@ app.post('/login', (req, res) => {
         });
 });
 
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "EMAIL_USER", // your email address
+      pass: "EMAIL_PASSWORD", // your email password
+    },
+  });
+  const sendWelcomeEmail = (recipientEmail) => {
+    const mailOptions = {
+      from: "EMAIL_USER",
+      to: recipientEmail,
+      subject: "Welcome to Our Website",
+      text: "Thank you for registering on our website. We are excited to have you!",
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+  };
+  
 app.post('/Staff-Dashboard',(req,res)=>{
 
 })
