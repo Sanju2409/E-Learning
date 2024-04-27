@@ -102,7 +102,7 @@ function AddStudent() {
     };
     
     return (
-        <div className="container" style={{ width: "1000px" }}>
+        <div className=" container " style={{ width: "1000px" }}>
             <div className="  row  vh-100">
 
                 <nav className="navbarstaff justify-content-space-between fixed-top ">

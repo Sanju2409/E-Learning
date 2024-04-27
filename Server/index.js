@@ -9,11 +9,14 @@ const CourseModel = require('./models/Courses')
 const multer = require('multer');
 const StudentCourseModel = require('./models/StudentsInCourse')
 const materialModel = require('./models/storeMaterials')
-const nodemailer = require("nodemailer");
+const Grade=require('./models/Grade')
 const path = require('path');
 const fs = require('fs');
-
-
+const QuizCreateModel = require('./models/QuizCreate')
+const EventModel=require('./models/Meeting')
+const Token=require('./models/token')
+const sendEmail=require('./sendEmail')
+const crypto=require('crypto')
 const app = express()
 
 app.use(cors({
@@ -75,7 +78,9 @@ const storage = multer.diskStorage({
     res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename, courseId,staffId });
 });
 
+app.post('/viewgrades',async(req,res)=>{
 
+})
 
 
 
@@ -90,8 +95,179 @@ app.get('/materials',async(req,res)=>{
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.get('/getquizstudent',async(req,res)=>{
+    const {courseId,staffId}=req.query;
+    try{
+        const questions=await QuizCreateModel.findOne({courseId:courseId,staffId:staffId});
+        res.json(questions);
+    }catch(error){
+        console.error('Error fetching questions:', error);
+        res.status(500).json({ error: 'Internal server error' });
 
+    }
+})
+// app.post('/student-answer-quiz',async(req,res)=>{
+//     const studentAnswers = req.body;
 
+//     // Simulate evaluating the answers
+//     const results = QuizCreateModel.map(question => {
+//         const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//         return { questionId: question._id, isCorrect };
+// }
+// )
+// }
+// )
+// app.post('/student-answer-quiz', async (req, res) => {
+//     const studentAnswers = req.body;
+
+//     // Simulate evaluating the answers
+//     const results = QuizCreateModel.map(quiz => {
+//         return quiz.questions.map(question => {
+//             const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//             return { questionId: question._id, isCorrect };
+//         });
+//     }).reduce((acc, val) => acc.concat(val), []);
+
+//     res.json(results);
+// });
+// app.post('/student-answer-quiz', async (req, res) => {
+//     const studentAnswers = req.body;
+
+//     try {
+//         // Fetch the quiz from the database based on courseId and staffId
+//         const { courseId, staffId } = studentAnswers;
+//         const quiz = await QuizCreateModel.findOne({ courseId, staffId });
+
+//         if (!quiz) {
+//             return res.status(404).json({ error: 'Quiz not found' });
+//         }
+
+//         // Compare student answers with correct answers
+//         const results = quiz.questions.map(question => {
+//             const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//             return { questionId: question._id, isCorrect };
+//         });
+
+//         res.json(results);
+//     } catch (error) {
+//         console.error('Error verifying student answers:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// });
+// app.post('/student-answer-quiz', async (req, res) => {
+//     // Your logic to handle the student's answers
+//     const studentAnswers = req.body;
+    
+//     console.log(studentAnswers)
+//     try {
+//         // Fetch the quiz from the database based on courseId and staffId
+//         const { courseId, staffId } = studentAnswers;
+//         const quiz = await QuizCreateModel.findOne({ courseId, staffId });
+
+//         if (!quiz) {
+//             return res.status(404).json({ error: 'Quiz not found' });
+//         }
+//         else{
+//             const results = quiz.questions.map(question => {
+//                         const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//                         return { questionId: question._id, isCorrect };
+//                     });
+//                     res.json(results);
+//         }
+
+//     //     // Compare student answers with correct answers
+//     //     const results = quiz.questions.map(question => {
+//     //         const isCorrect = studentAnswers[question._id] === question.correctAnswerIndex;
+//     //         return { questionId: question._id, isCorrect };
+//     //     });
+
+        
+//     } catch (error) {
+//         console.error('Error verifying student answers:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+//     return true;
+//   });
+app.post('/student-answer-quiz', async (req, res) => {
+    // Extract studentAnswers and other required data from the request body
+    const { answers, courseId, staffId } = req.body;
+   
+    
+    try {
+        // Fetch the quiz from the database based on courseId and staffId
+        const quiz = await QuizCreateModel.findOne({ courseId, staffId });
+
+        if (!quiz) {
+            return res.status(404).json({ error: 'Quiz not found' });
+        }
+
+        // Compare student answers with correct answers
+     let correctcount=0;
+        const results = quiz.questions.map(question => {
+            const isCorrect = answers[question._id] === question.correctAnswerIndex;
+            if(isCorrect){
+                correctcount++;
+            }
+            return { questionId: question._id, isCorrect };
+        });
+        const totalnoofquestions=quiz.questions.length;
+        const percentage=(correctcount/totalnoofquestions*100);
+        
+
+        const response={
+         
+            percentage,
+            totalnoofquestions,
+            correctcount
+
+        }
+        res.json(response);
+    } catch (error) {
+        console.error('Error verifying student answers:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+app.post('/student-submit-quiz',async(req,res)=>{
+
+    const{grade,percentage,totalnoofquestions,courseId,staffId,studentId}=req.body;
+    try{
+        Grade.create({grade:grade,percentage:percentage,courseId:courseId,staffId:staffId,studentId:studentId,totalnoofquestions:totalnoofquestions,})
+    }
+    catch(error){
+        console.log("Error storing gardes",error);
+    }
+})
+app.get('/checkattempted',async(req,res)=>{
+    const {studentId,courseId}=req.query;
+    try{
+        const quizgrades=await Grade.find({studentId:studentId,courseId:courseId});
+        const attempted = quizgrades.length > 0;
+        res.json({ attempted: attempted });
+    }
+    catch(error){
+        console.error('Error fetching quiz grade to display',error);
+    }
+})
+app.get('/fetchquizgrade',async(req,res)=>{
+    const {studentId,courseId}=req.query;
+    try{
+        const quizgrades=await Grade.find({studentId:studentId,courseId:courseId});
+        res.json(quizgrades);
+    }
+    catch(error){
+        console.error('Error fetching quiz grade to display',error);
+    }
+})
+app.get('/fetchstudentgradeforstaff',async(req,res)=>{
+    const {staffId,courseId}=req.query;
+    try{
+        const studentgrade=await Grade.find({staffId:staffId,courseId:courseId});
+        res.json(studentgrade);
+    }
+    catch(error){
+        console.error('Error fetching student grade to display',error);
+    }
+})
 app.get('/studmaterials',async(req,res)=>{
     const { courseId, staffId } = req.query;
 
@@ -167,35 +343,185 @@ function getContentType(filePath) {
 
 
 
-
-
-
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
     const { name, email, password, role } = req.body;
-    
-    RegisterModel.findOne({ email: email })
-        .then(user => {
-            if (user) {
-                res.json("Already have an account")
-            }
-            else {
-                bcrypt.hash(password, 10)
-                    .then(hash => {
-                        RegisterModel.create({ name: name, email: email, password: hash, role: role })
-                            .then(result => res.json("Account created"))
+
+    try {
+        let user = await RegisterModel.findOne({ email: email });
+        if (user) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user = await RegisterModel.create({ name, email, password: hashedPassword, role });
+
+        const token = await new Token({
+            userId: user._id,
+            token: crypto.randomBytes(32).toString("hex")
+        }).save();
+
+        console.log("User id:",user._id);
+        console.log("User token:",token.token);
+        const url = `http://localhost:3001/registerss/${user._id}/verify/${token.token}`;
+        await sendEmail(user.email, "Verify email", url);
+        res.status(201).json({ message: "An email has been sent to your account. Please verify" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
 
 
-                            .catch(err => res.json(err))
 
-                    }
+// app.post('/register', async (req, res) => {
+//     const { name, email, password, role } = req.body;
 
-                    ).catch(err => res.json(err))
-                    sendWelcomeEmail(email);   
-           }
-           
-        })
+//     try {
+//         let user = await RegisterModel.findOne({ email: email });
+//         if (user) {
+//             return res.json("Already have an account");
+//         }
 
-})
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         user = (await RegisterModel.create({ name: name, email: email, password: hashedPassword, role: role })).save();
+
+//         const token = await new Token({
+//             userId: user._id,
+//             token: crypto.randomBytes(32).toString("hex")
+//         }).save();
+
+//         const url = `http://localhost:3001/register/${user._id}/verify/${token.token}`;
+//         await sendEmail(user.email, "Verify email", url);
+//         res.status(201).send({message:"An email send to your account please verify"});
+//         // res.json("Account created");
+//     } catch (error) {
+//         console.error(error);
+//         res.json(error);
+//     }
+// });
+// app.get("/:id/verify/:token",async(req,res)=>{
+//    try{
+//     console.log("ID:", req.params.id);
+//     console.log("Token:", req.params.token);
+//     const user=await RegisterModel.findOne({_id:req.params.id});
+//     if(!user) return res.status(400).send({message:"Invalid link"});
+
+//     const token=await Token.findOne({
+//         userId:user._id,
+//         token:req.params.token
+//     });
+//     if(!token) return res.status(400).send({message:"Invalid link"});
+//     await RegisterModel.updateOne({_id:user._id},{verified:true});
+//     await token.remove()
+//     res.status(200).send({message:'Email verified succesfully'})
+//    } catch(error){
+//         console.log("Internal server error",error);
+//    }
+// });
+// app.get("/registerss/:id/verify/:token", async (req, res) => {
+//     // Route logic remains the same
+//     try {
+//         console.log("ID:", req.params.id);
+//         console.log("Token:", req.params.token);
+//         const user = await RegisterModel.findOne({ _id: req.params.id });
+//         if (!user) return res.status(400).send({ message: "Invalid link" });
+
+//         const token = await Token.findOne({
+//             userId: user._id,
+//             token: req.params.token
+//         });
+//         if (!token) return res.status(400).send({ message: "Invalid link" });
+
+//         await RegisterModel.updateOne({ _id: user._id }, { verified: true });
+//         // await token.remove();
+//         res.status(200).send({ message: 'Email verified successfully' });
+//     } catch (error) {
+//         console.log("Internal server error", error);
+//         res.status(500).send({ message: "Internal server error" });
+//     }
+// });
+
+// app.get("/registerss/:id/verify/:token", async (req, res) => {
+//     // Route logic remains the same
+//     try {
+//         console.log("ID:", req.params.id);
+//         console.log("Token:", req.params.token);
+//         const user = await RegisterModel.findOne({ _id: req.params.id });
+//         if (!user) return res.status(400).send({ message: "Invalid link user" });
+
+//         const token = await Token.findOne({
+//             userId: user._id,
+//             token: req.params.token
+//         });
+//         if (!token) return res.status(400).send({ message: "Invalid link" });
+
+//         await RegisterModel.updateOne({ _id: user._id }, { verified: true });
+//         // res.json({id:token.userId,token:token.token});
+//         // res.send({id:token.userId,token:token.token});
+//         // Send JSON response with success message and login URL
+//         res.status(200).json({
+//             message: 'Email verified successfully',
+//             loginUrl: 'http://localhost:5173/login' // Change this URL to your login page URL
+//         });
+//     } catch (error) {
+//         console.log("Internal server error", error);
+//         res.status(500).send({ message: "Internal server error" });
+//     }
+// });
+app.get("/registerss/:id/verify/:token", async (req, res) => {
+    try {
+        console.log("ID:", req.params.id);
+        console.log("Token:", req.params.token);
+        const user = await RegisterModel.findOne({ _id: req.params.id });
+        if (!user) return res.status(400).send({ message: "Invalid link user" });
+
+        const token = await Token.findOne({
+            userId: user._id,
+            token: req.params.token
+        });
+        if (!token) return res.status(400).send({ message: "Invalid link" });
+
+        await RegisterModel.updateOne({ _id: user._id }, { verified: true });
+
+        // Redirect to the email verification page
+        res.redirect(`http://localhost:5173/registerss/${req.params.id}/verify/${req.params.token}`);
+    } catch (error) {
+        console.log("Internal server error", error);
+        res.status(500).send({ message: "Internal server error" });
+    }
+});
+
+// app.post('/register', async (req, res) => {
+//     const { name, email, password, role } = req.body;
+//     try{
+
+//     }
+//     RegisterModel.findOne({ email: email })
+//         .then(user => {
+//             if (user) {
+//                 res.json("Already have an account")
+//             }
+//             else {
+//                 bcrypt.hash(password, 10)
+//                     .then(hash => {
+//                         user=RegisterModel.create({ name: name, email: email, password: hash, role: role })
+//                             .then(result => res.json("Account created"))
+
+
+                            
+//                         const token=await new Token({
+//                             userId:user._id,
+//                             token:crypto.randomBytes(32).toString("hex")
+//                         }).save();
+//                         const url='http://localhost:3001/users/{user._id}/verify/{token.token}';
+//                         await sendEmail(user.email,"Verigy email",url);
+//                     }
+
+//                     ).catch(err => res.json(err))
+//            }
+//         })
+
+// })
 app.post('/addstaff', (req, res) => {
     const { name, email, password, role } = req.body;
 
@@ -226,18 +552,23 @@ app.post('/login', (req, res) => {
     RegisterModel.findOne({ email: email })
         .then(user => {
             if (user) {
+                // Check if the user is verified
+                if (!user.verified) {
+                    return res.json({ error: "Email not verified" });
+                }
+
                 bcrypt.compare(password, user.password, (err, result) => {
                     if (err) {
                         return res.json({ error: "Internal Server Error" });
                     }
                     if (result) {
                         // Passwords match
-                        const token = jwt.sign({ email: req.body.email, role: req.body.role,staffId:user._id }, "jwt-access-key", { expiresIn: '60m' });
+                        const token = jwt.sign({ email: req.body.email, role: req.body.role, staffId: user._id }, "jwt-access-key", { expiresIn: '60m' });
                         const refreshtoken = jwt.sign({ email: req.body.email, role: req.body.role }, "jwt-refresh-key", { expiresIn: '60m' });
                         res.cookie('token', token, { httpOnly: true }, { maxAge: 60000 });
                         res.cookie('refreshtoken', refreshtoken, { httpOnly: true, maxAge: 60000, secure: true, sameSite: 'strict' });
                         
-                        return res.json({ status: "Success", role: user.role,staffId:user._id });
+                        return res.json({ status: "Success", role: user.role, staffId: user._id,verified:true });
                     } else {
                         // Passwords don't match
                         return res.json({ error: "Incorrect password" });
@@ -254,32 +585,38 @@ app.post('/login', (req, res) => {
 });
 
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: "EMAIL_USER", // your email address
-      pass: "EMAIL_PASSWORD", // your email password
-    },
-  });
-  const sendWelcomeEmail = (recipientEmail) => {
-    const mailOptions = {
-      from: "EMAIL_USER",
-      to: recipientEmail,
-      subject: "Welcome to Our Website",
-      text: "Thank you for registering on our website. We are excited to have you!",
-    };
-  
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log("Error sending email:", error);
-      } else {
-        console.log("Email sent:", info.response);
-      }
-    });
-  };
-  
+// app.post('/login', (req, res) => {
+//     const { email, password } = req.body;
+//     RegisterModel.findOne({ email: email })
+//         .then(user => {
+//             if (user) {
+//                 bcrypt.compare(password, user.password, (err, result) => {
+//                     if (err) {
+//                         return res.json({ error: "Internal Server Error" });
+//                     }
+//                     if (result) {
+//                         // Passwords match
+//                         const token = jwt.sign({ email: req.body.email, role: req.body.role,staffId:user._id }, "jwt-access-key", { expiresIn: '60m' });
+//                         const refreshtoken = jwt.sign({ email: req.body.email, role: req.body.role }, "jwt-refresh-key", { expiresIn: '60m' });
+//                         res.cookie('token', token, { httpOnly: true }, { maxAge: 60000 });
+//                         res.cookie('refreshtoken', refreshtoken, { httpOnly: true, maxAge: 60000, secure: true, sameSite: 'strict' });
+                        
+//                         return res.json({ status: "Success", role: user.role,staffId:user._id });
+//                     } else {
+//                         // Passwords don't match
+//                         return res.json({ error: "Incorrect password" });
+//                     }
+//                 });
+//             } else {
+//                 return res.json({ error: "No record existed" });
+//             }
+//         })
+//         .catch(err => {
+//             console.error("Error:", err);
+//             return res.status(500).json({ error: "Internal Server Error" });
+//         });
+// });
+
 app.post('/Staff-Dashboard',(req,res)=>{
 
 })
@@ -408,6 +745,17 @@ app.delete('/removestudentfromcourse',async(req,res)=>{
     }
 });
 
+//create quiz
+app.post('/createquiz',async(req,res)=>{
+    try{
+        const quiz=QuizCreateModel.create(req.body);
+        res.json("Succesfull creation of quiz");
+        console.log(req.body);
+    }
+    catch(err){
+        res.json("Failed to create quiz");
+    }
+});
 
 
 
@@ -511,5 +859,80 @@ app.post('/change-password', async (req, res) => {
       console.error('Error changing password:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
+  });
+  
+//schedule
+// app.post('/add-event/:staffId', async (req, res) => {
+//     try {
+//       const { title, description, startTime, endTime } = req.body;
+//       const { staffId } = req.params;
+  
+//       // Create a new event object
+//       const event = new EventModel({
+//         title,
+//         description,
+//         startTime,
+//         endTime,
+//         staffId
+//       });
+  
+//       // Save the event to the database
+//       await event.save();
+  
+//       res.json({ success: true, message: 'Event added successfully' });
+//     } catch (error) {
+//       console.error('Error adding event:', error);
+//       res.status(500).json({ success: false, message: 'Failed to add event' });
+//     }
+//   });
+  
+//   // Route to fetch events for a specific staff member
+//   app.get('/events/:staffId', async (req, res) => {
+//     try {
+//       const { staffId } = req.params;
+  
+//       // Fetch events for the specified staffId
+//       const events = await EventModel.find({ staffId });
+  
+//       res.json({ success: true, events });
+//     } catch (error) {
+//       console.error('Error fetching events:', error);
+//       res.status(500).json({ success: false, message: 'Failed to fetch events' });
+//     }
+//   });
+
+//schedule2
+app.post('/meeting', (req, res) => {
+    const { staffId } = req.query;
+    const { date, time, info } = req.body;
+    
+    const newMeeting = new Meeting({
+      staffId,
+      date,
+      time,
+      info,
+    });
+  
+    newMeeting.save()
+      .then(() => {
+        res.status(201).send('Meeting added successfully');
+      })
+      .catch((err) => {
+        console.error('Error adding meeting:', err);
+        res.status(500).send('Error adding meeting');
+      });
+  });
+  
+  app.get('/meetingfetch', (req, res) => {
+    const { staffId } = req.query;
+  
+    Meeting.find({ staffId })
+      .then((meetings) => {
+        res.json({ meetings });
+      })
+      .catch((err) => {
+        console.error('Error fetching meetings:', err);
+        res.status(500).send('Error fetching meetings');
+      });
   });
   

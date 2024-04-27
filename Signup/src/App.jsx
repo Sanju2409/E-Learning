@@ -24,21 +24,37 @@ import Announcements from './Announcements.jsx';
 import StudViewMaterials from './Stud_view_materials.jsx';
 import UploadMaterialPage from './AddMaterial.jsx';
 import AddStudent from './AddStudent.jsx';
-import View from './view.jsx';
-import QuizForm from './Quiz.jsx';
+import View from './view.jsx'
+import About from './About.jsx';
+import QuizForm from './QuizCreate.jsx'
+import JoinScreen  from './JoinScreen.jsx';
+import QuizPage from './QuizAttempt.jsx';
+import QuizStudent from './Quiz-Student.jsx';
+import GradeView from './GradeView.jsx';
+import GradeViewByStaff from './GradeViewByStaff.jsx';
+import EmailVerify from './EmailVerify.jsx';
+// import EmailVerify from './EmailVerify.jsx';
+// import QuizAttempts from './QuizAttempts.jsx';
+// import EmailVerify from './EmailVerify.jsx'
 function App() {
+  // const user=localStorage.getItem("token");
   return (
   
     <Router>
     
         <Routes>
+        <Route path="/registerss/:id/verify/:token" element={<EmailVerify/>}/>
+        {/* <Route path="/registerss/:id/verify/:token" element={<EmailVerify />} /> */}
+
+
+          {/* <Route path="/EmailVerify" element={<EmailVerify/>}/> */}
         <Route path="/Navbar" element={<Navigation/>} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
        
           
           <Route path="/home" element={<Home />} />
-          <Route path="/Quiz" element={<QuizForm />} />
+          <Route path="/About" element={<About/>}/>
   
           <Route path="/footer" element={<Footer />} />
           <Route path="/Addstaff" element={<AddStaff/>} />
@@ -58,6 +74,12 @@ function App() {
           <Route path="/View" element={<View/>}/>
          
           <Route path="/Stud_view_materials" element={<StudViewMaterials/>}/>
+          <Route path='/QuizCreate' element={<QuizForm/>}/>
+          <Route path='/JoinScreen' element={<JoinScreen/>}/>
+          <Route path='/QuizPage' element={<QuizPage/>}/>
+          <Route path='/QuizStudent' element={<QuizStudent/>}/>
+          <Route path='/Grades' element={<GradeView/>}/>
+          <Route path='/GradeViewByStaff' element={<GradeViewByStaff/>}/>
         </Routes>
       
     </Router>
