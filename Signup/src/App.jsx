@@ -8,8 +8,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 //import Dashboard from './Dashboard';
 //import PrivateRoute from './PrivateRoute';
 //import { AuthProvider } from './context/AuthProvider';
-import AddStaff from './AddStaff';
-import StudentsDashboard from './Student-dashboard.jsx'; 
+// import AddStaff from './AddStaff';
+// import StudentsDashboard from './Student-dashboard.jsx'; 
 import StaffDashboard from './Staff-Dashboard'; 
 import ViewCourse from './view-course';
 import CreateCourse  from './create-course';
@@ -33,6 +33,8 @@ import QuizStudent from './Quiz-Student.jsx';
 import GradeView from './GradeView.jsx';
 import GradeViewByStaff from './GradeViewByStaff.jsx';
 import EmailVerify from './EmailVerify.jsx';
+import StudentDashboard from './Student-dashboard.jsx';
+import AddStaff from './AddStaff';
 // import EmailVerify from './EmailVerify.jsx';
 // import QuizAttempts from './QuizAttempts.jsx';
 // import EmailVerify from './EmailVerify.jsx'
@@ -57,9 +59,9 @@ function App() {
           <Route path="/About" element={<About/>}/>
   
           <Route path="/footer" element={<Footer />} />
-          <Route path="/Addstaff" element={<AddStaff/>} />
-          <Route path="/Student-dashboard" element={<StudentsDashboard />} />
           
+          {/* <Route path="/Student-dashboard" element={<StudentsDashboard />} /> */}
+          <Route path="/Student-dashboard" element={<StudentDashboard/>}/>
           <Route path="/Staff-Dashboard" element={<StaffDashboard />} />
           <Route path="/Studviewcourse" element={<Studviewcourse />} />
         <Route path="/Announcements" element={<Announcements />} />
@@ -72,7 +74,7 @@ function App() {
           <Route path="/AddMaterial" element={<UploadMaterialPage/>} />
           <Route path="/AddStudentToCourse" element={<AddStudent/>}/>
           <Route path="/View" element={<View/>}/>
-         
+         <Route path="addStaff" element={<AddStaff/>}/>
           <Route path="/Stud_view_materials" element={<StudViewMaterials/>}/>
           <Route path='/QuizCreate' element={<QuizForm/>}/>
           <Route path='/JoinScreen' element={<JoinScreen/>}/>
