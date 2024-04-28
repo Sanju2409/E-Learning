@@ -490,7 +490,30 @@ app.get("/registerss/:id/verify/:token", async (req, res) => {
         res.status(500).send({ message: "Internal server error" });
     }
 });
+app.post('/lead',async(req,res)=>{
+    const { name, email, password, role } = req.body;
 
+    RegisterModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                res.json("Already have an account")
+            }
+            else {
+                bcrypt.hash(password, 10)
+                    .then(hash => {
+                        RegisterModel.create({ name: name, email: email, password: hash, role: role })
+                            .then(result => res.json("Account created"))
+                            //  .alert("Created")
+                            .catch(err => res.json(err))
+                    }
+
+                    ).catch(err => res.json(err))
+
+
+            }
+        })
+
+})
 // app.post('/register', async (req, res) => {
 //     const { name, email, password, role } = req.body;
 //     try{
@@ -522,7 +545,7 @@ app.get("/registerss/:id/verify/:token", async (req, res) => {
 //         })
 
 // })
-app.post('/addstaff', (req, res) => {
+app.post('/addStaffRegister', (req, res) => {
     const { name, email, password, role } = req.body;
 
     RegisterModel.findOne({ email: email })
@@ -813,7 +836,7 @@ const renewToken = (req, res) => {
 app.get('/Student-dashboard', varifyUser, (req, res) => {
     return res.json({ valid: true, message: "authorized" })
 })
-app.get('/addstaff', varifyUser, (req, res) => {
+app.get('/addStaffRegister', varifyUser, (req, res) => {
     return res.json({ valid: true, message: "authorized" })
 })
 app.get('/Staff-Dashboard', varifyUser, (req, res) => {

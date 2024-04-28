@@ -116,8 +116,8 @@ function Login() {
         if (result.data.status === "Success") {
           // Check if the user is verified
           if (result.data.verified) {
-            if (result.data.role === "admin") {
-              navigate('/addStaff');
+            if (result.data.role === "lead") {
+              navigate('/lead');
             } else if (result.data.role === "student") {
               navigate('/Student-dashboard', { state: { userEmail: email, staffId: result.data.staffId } });
             } else {
