@@ -34,7 +34,9 @@ import GradeView from './GradeView.jsx';
 import GradeViewByStaff from './GradeViewByStaff.jsx';
 import EmailVerify from './EmailVerify.jsx';
 import StudentDashboard from './Student-dashboard.jsx';
-import AddStaff from './AddStaff';
+// import AddStaff from './AddStaff';
+import AddStaffRegister from './AddStaffRegister.jsx';
+import Lead from './lead.jsx';
 // import EmailVerify from './EmailVerify.jsx';
 // import QuizAttempts from './QuizAttempts.jsx';
 // import EmailVerify from './EmailVerify.jsx'
@@ -45,6 +47,7 @@ function App() {
     <Router>
     
         <Routes>
+          <Route path='lead' element={<Lead/>}/>
         <Route path="/registerss/:id/verify/:token" element={<EmailVerify/>}/>
         {/* <Route path="/registerss/:id/verify/:token" element={<EmailVerify />} /> */}
 
@@ -53,7 +56,7 @@ function App() {
         <Route path="/Navbar" element={<Navigation/>} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-       
+          <Route path="/addStaffRegister" element={<AddStaffRegister/>}/>
           
           <Route path="/home" element={<Home />} />
           <Route path="/About" element={<About/>}/>
@@ -74,7 +77,7 @@ function App() {
           <Route path="/AddMaterial" element={<UploadMaterialPage/>} />
           <Route path="/AddStudentToCourse" element={<AddStudent/>}/>
           <Route path="/View" element={<View/>}/>
-         <Route path="addStaff" element={<AddStaff/>}/>
+         {/* <Route path="addsStaff" element={<AddStaff/>}/> */}
           <Route path="/Stud_view_materials" element={<StudViewMaterials/>}/>
           <Route path='/QuizCreate' element={<QuizForm/>}/>
           <Route path='/JoinScreen' element={<JoinScreen/>}/>
