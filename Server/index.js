@@ -17,6 +17,7 @@ const EventModel=require('./models/Meeting')
 const Token=require('./models/token')
 const sendEmail=require('./sendEmail')
 const crypto=require('crypto')
+const  Announcement=require('./models/Announcements')
 const app = express()
 
 app.use(cors({
@@ -779,7 +780,26 @@ app.post('/createquiz',async(req,res)=>{
         res.json("Failed to create quiz");
     }
 });
-
+app.get('/announcemntfetch', async (req, res) => {
+    try {
+      const announcements = await Announcement.find().sort({ date: -1 });
+      res.json(announcements);
+    } catch (error) {
+      console.error('Error fetching announcements:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+app.post('/announcementadd', async (req, res) => {
+    try {
+      const { title, content } = req.body;
+      const announcement = new Announcement({ title, content });
+      await announcement.save();
+      res.status(201).json({ message: 'Announcement added successfully' });
+    } catch (error) {
+      console.error('Error adding announcement:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 
 // app.get('/viewcourse',async (req,res)=>{
@@ -842,6 +862,7 @@ app.get('/addStaffRegister', varifyUser, (req, res) => {
 app.get('/Staff-Dashboard', varifyUser, (req, res) => {
     return res.json({ valid: true, message: "authorized" })
 })
+
 app.listen(
     3001,
     () => {
