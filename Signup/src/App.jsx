@@ -37,6 +37,7 @@ import StudentDashboard from './Student-dashboard.jsx';
 // import AddStaff from './AddStaff';
 import AddStaffRegister from './AddStaffRegister.jsx';
 import Lead from './lead.jsx';
+import AdminDashboard from './AdminDashboard.jsx';
 // import EmailVerify from './EmailVerify.jsx';
 // import QuizAttempts from './QuizAttempts.jsx';
 // import EmailVerify from './EmailVerify.jsx'
@@ -47,6 +48,7 @@ function App() {
     <Router>
     
         <Routes>
+          <Route path='admindashboard' element={<AdminDashboard/>}/>
           <Route path='lead' element={<Lead/>}/>
         <Route path="/registerss/:id/verify/:token" element={<EmailVerify/>}/>
         {/* <Route path="/registerss/:id/verify/:token" element={<EmailVerify />} /> */}

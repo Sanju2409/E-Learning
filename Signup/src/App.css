@@ -505,88 +505,154 @@ background-color: #d8f5ff;
     .success_msg{
       background-color: #1e5410;
     }
-
-    /* studviewcourse.css */
-.hero-section {
-  background-color: #f5f5f5;
-  padding: 40px;
-  text-align: center;
-}
-
-.course-stats {
-  margin: 40px 0;
-  text-align: center;
-}
-
-.stats-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.stat-card {
-  background-color: #f5f5f5;
-  padding: 20px;
-  margin: 0 10px;
-  text-align: center;
-}
-
-.course-title{
-  font-weight: bold;
-}
-.view-button{
-  background-color: #1526e3;
-  
-}
-.attempt-button{
-  background-color: rgb(255, 0, 21);
-}
-.grades-button{
-  background-color:  #4ed410;
-}
-.view-button:hover,.attempt-button:hover,.grades-button:hover{
-  background-color: #02a6ff;
-}
-.view-button link{
-  text-decoration: none;
-}
-.option-link {
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Inherit text color */
-}
-
-.option-link:hover {
-  text-decoration: none; /* Remove underline on hover */
-  color: inherit; /* Inherit text color on hover */
-}
-.option-container {
-  display: flex;
-  gap: 20px; /* Add space between buttons */
-}
-.option-link:last-child {
-  margin-right: 0; /* Remove margin from the last button */
-}
-.course-details{
-  display: flex;
-  flex-direction: column;
- 
-  align-items: center; /* Align items vertically */
-}
-
-.course-info {
-  flex: 1; /* Take up remaining space */
-}
-.course-list-title{
-  text-align: center;
-}
-/* .course-card {
-  border: 1px solid #ddd;
-  background-color: #95daf1;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  overflow: hidden;
-  position: relative;
-  /* width: calc(33.333% - 20px); */
-  /* transition: transform 0.3s ease-in-out; */
-/* } */ 
+    
+    /* staff dahsboard */
+    .staffdiv {
+      min-height: 100vh;
+      padding-top: 5rem;
+    }
+    
+    .navbar {
+      padding: 0.5rem 1rem;
+    }
+    
+    .navbar-toggler {
+      border: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'><path stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/></svg>");
+      width: 2rem;
+      height: 2rem;
+      display: inline-block;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% 100%;
+    }
+    
+    .announcement-page {
+      border-top: 1px solid #ddd;
+      padding-top: 2rem;
+    }
+    
+    .announcement-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .announcement-item {
+      border: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .meeting-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .meeting-card {
+      border: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+    }
+    
+    .meeting-date-time {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .input-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .addschedulebtn {
+      margin-top: 1rem;
+    }
+    .hero-section {
+      background-color: #f5f5f5;
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .course-stats {
+      margin: 40px 0;
+      text-align: center;
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .stat-card {
+      background-color: #f5f5f5;
+      padding: 20px;
+      margin: 0 10px;
+      text-align: center;
+    }
+    
+    .course-title{
+      font-weight: bold;
+    }
+    .view-button{
+      background-color: #1526e3;
+      
+    }
+    .attempt-button{
+      background-color: rgb(255, 0, 21);
+    }
+    .grades-button{
+      background-color:  #4ed410;
+    }
+    .view-button:hover,.attempt-button:hover,.grades-button:hover{
+      background-color: #02a6ff;
+    }
+    .view-button link{
+      text-decoration: none;
+    }
+    .option-link {
+      text-decoration: none; /* Remove underline */
+      color: inherit; /* Inherit text color */
+    }
+    
+    .option-link:hover {
+      text-decoration: none; /* Remove underline on hover */
+      color: inherit; /* Inherit text color on hover */
+    }
+    .option-container {
+      display: flex;
+      gap: 20px; /* Add space between buttons */
+    }
+    .option-link:last-child {
+      margin-right: 0; /* Remove margin from the last button */
+    }
+    .course-details{
+      display: flex;
+      flex-direction: column;
+     
+      align-items: center; /* Align items vertically */
+    }
+    
+    .course-info {
+      flex: 1; /* Take up remaining space */
+    }
+    .course-list-title{
+      text-align: center;
+    }
+    /* .course-card {
+      border: 1px solid #ddd;
+      background-color: #95daf1;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+      overflow: hidden;
+      position: relative;
+      /* width: calc(33.333% - 20px); */
+      /* transition: transform 0.3s ease-in-out; */
+    /* } */ 

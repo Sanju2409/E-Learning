@@ -31,6 +31,21 @@ const StaffDashboard = () => {
 
   //const navigate = useNavigate()
   axios.defaults.withCredentials = true;
+  const [announcements, setAnnouncements] = useState([]);
+  const [newAnnouncement, setNewAnnouncement] = useState({ title: '', content: '' });
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/announcemntfetch');
+        setAnnouncements(response.data);
+      } catch (error) {
+        console.error('Error fetching announcements:', error);
+      }
+    };
+    fetchAnnouncements();
+  }, []);
+
   useEffect(() => {
     // Fetch meetings from the backend when component mounts
     axios.get('http://localhost:3001/meetingfetch',{
@@ -266,6 +281,24 @@ const StaffDashboard = () => {
           </div>
         ))}
       </div>
+      <div className="announcement-page" style={{ padding: '2rem', backgroundColor: '#f5f5f5' }}>
+      <h2 style={{ color: '#333', textAlign: 'center', marginBottom: '2rem' }}>Announcements</h2>
+
+    
+
+      {/* List of Announcements */}
+      <div className="announcement-list">
+        {announcements.map((announcement) => (
+          <div key={announcement._id} className="announcement-item card mb-3">
+            <div className="card-body" style={{ padding: '1rem' }}>
+              <h3 className="card-title">{announcement.title}</h3>
+              <p className="card-text">Date: {new Date(announcement.date).toLocaleDateString()}</p>
+              <p className="card-text">{announcement.content}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
 
 
