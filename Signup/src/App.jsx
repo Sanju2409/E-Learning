@@ -48,6 +48,7 @@ function App() {
     <Router>
     
         <Routes>
+           <Route path="/" element={<Home />} />
           <Route path='admindashboard' element={<AdminDashboard/>}/>
           <Route path='lead' element={<Lead/>}/>
         <Route path="/registerss/:id/verify/:token" element={<EmailVerify/>}/>
