@@ -66,16 +66,17 @@
     margin: 0 -10px;
   }
   
-  .course-card {
+   .course-card {
     border: 1px solid #ddd;
+   
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 10px;
     overflow: hidden;
     position: relative;
-    width: calc(33.333% - 20px);
+    /* width: calc(33.333% - 20px); */
     transition: transform 0.3s ease-in-out;
-  }
+  } 
   
   .course-card:hover {
     transform: translateY(-5px);
@@ -90,14 +91,15 @@
   
   .course-info {
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: #9fd9f1;
   }
   
   .course-title {
+    font-weight: bold;
     margin: 0;
     font-size: 1.2rem;
     margin-bottom: 5px;
-    color: #333;
+    color: #0e0e0e;
   }
   
   .course-description {

@@ -1,0 +1,39 @@
+%{
+#include<stdio.h>
+#include<stdlib.h>
+%}
+%token id digit NL
+%left "+" "-" "*" "/"
+%%
+start:expr NL {printf("valid");exit(0);}
+;
+expr:expr '+' expr
+|expr '-' expr
+|expr '*' expr
+|expr '/' expr
+|'(' expr ')'
+|'{' expr '}'
+|'[' expr ']'
+|id
+|digit
+;
+%%
+int yyerror(char *msg){
+printf("invalid");
+exit(0);
+}
+int main(){
+printf("Enter the string");
+yyparse();
+}
+
+
+%{
+#include "y.tab.h"
+%}
+%%
+[a-zA-Z][a-zA-Z0-9]* {returb id;}
+[0-9]+ {return digit;}
+\n {return NL:}
+. {return yytext[0];}
+%%

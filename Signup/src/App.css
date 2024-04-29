@@ -269,7 +269,7 @@
 }
 .material-content-title {
   text-align: center;
-  margin-top: 15px;
+  margin-top: 80px;
   margin-bottom: 20px;
   font-size: 32px;
   font-weight: bold;
@@ -505,3 +505,88 @@ background-color: #d8f5ff;
     .success_msg{
       background-color: #1e5410;
     }
+
+    /* studviewcourse.css */
+.hero-section {
+  background-color: #f5f5f5;
+  padding: 40px;
+  text-align: center;
+}
+
+.course-stats {
+  margin: 40px 0;
+  text-align: center;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background-color: #f5f5f5;
+  padding: 20px;
+  margin: 0 10px;
+  text-align: center;
+}
+
+.course-title{
+  font-weight: bold;
+}
+.view-button{
+  background-color: #1526e3;
+  
+}
+.attempt-button{
+  background-color: rgb(255, 0, 21);
+}
+.grades-button{
+  background-color:  #4ed410;
+}
+.view-button:hover,.attempt-button:hover,.grades-button:hover{
+  background-color: #02a6ff;
+}
+.view-button link{
+  text-decoration: none;
+}
+.option-link {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit text color */
+}
+
+.option-link:hover {
+  text-decoration: none; /* Remove underline on hover */
+  color: inherit; /* Inherit text color on hover */
+}
+.option-container {
+  display: flex;
+  gap: 20px; /* Add space between buttons */
+}
+.option-link:last-child {
+  margin-right: 0; /* Remove margin from the last button */
+}
+.course-details{
+  display: flex;
+  flex-direction: column;
+ 
+  align-items: center; /* Align items vertically */
+}
+
+.course-info {
+  flex: 1; /* Take up remaining space */
+}
+.course-list-title{
+  text-align: center;
+}
+/* .course-card {
+  border: 1px solid #ddd;
+  background-color: #95daf1;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  overflow: hidden;
+  position: relative;
+  /* width: calc(33.333% - 20px); */
+  /* transition: transform 0.3s ease-in-out; */
+/* } */ 

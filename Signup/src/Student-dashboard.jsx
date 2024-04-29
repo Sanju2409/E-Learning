@@ -53,31 +53,59 @@
 
 import axios from  "axios";
 import  {useEffect} from 'react'
-import { useNavigate,useLocation } from "react-router-dom";
+// import { useNavigate,useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const StudentDashboard=()=>{
     // const[message,setMessage]=useState('');
-    const navigate=useNavigate();
+    // const navigate=useNavigate();
   //   const [courses, setCourses] = useState([]);
   // const [courseProgress, setCourseProgress] = useState([]);
   const location=useLocation();
   const userEmail = location.state?.userEmail;
+  axios.defaults.withCredentials=true;
+  useEffect(()=>{
+    // axios.get('http://localhost:3001/Student-dashboard')
+    //.then(res=>console.log(res))
+    //.catch(err=>console.log(err))
+    // .then(res=>{
+    //     if(res.data.valid){
+    //        // setMessage(res.data.message)
+    //     }
+    //     else{
+    //         navigate('/')
+    //     }
+    // })
+  })
+  // useEffect(()=>{
+  //     axios.get('http://localhost:3001/Student-dashboard')
+  //     //.then(res=>console.log(res))
+  //     //.catch(err=>console.log(err))
+  //     .then(res=>{
+  //         if(res.data.valid){
+  //            // setMessage(res.data.message)
+  //         }
+  //         else{
+  //             navigate('/')
+  //         }
+  //     })
+  // })
   // const [announcements, setAnnouncements] = useState([]);
   // const [profile, setProfile] = useState({});
-    axios.defaults.withCredentials=true;
-    useEffect(()=>{
-        axios.get('http://localhost:3001/Student-dashboard')
-        //.then(res=>console.log(res))
-        //.catch(err=>console.log(err))
-        .then(res=>{
-            if(res.data.valid){
-               // setMessage(res.data.message)
-            }
-            else{
-                navigate('/')
-            }
-        })
+    // axios.defaults.withCredentials=true;
+    // useEffect(()=>{
+    //     axios.get('http://localhost:3001/Student-dashboard')
+    //     //.then(res=>console.log(res))
+    //     //.catch(err=>console.log(err))
+    //     .then(res=>{
+    //         if(res.data.valid){
+    //            // setMessage(res.data.message)
+    //         }
+    //         else{
+    //             navigate('/')
+    //         }
+    //     })
     //     axios.get('http://localhost:3001/courses')
     //     .then(response => setCourses(response.data))
     //     .catch(error => console.error('Error fetching courses:', error));
@@ -97,7 +125,7 @@ const StudentDashboard=()=>{
     //     .then(response => setProfile(response.data))
     //     .catch(error => console.error('Error fetching profile:', error));
     
-    })
+    // })
     return(
         <div className="staffdiv vh-100 " >
         <nav className="navbarstaff justify-content-space-between fixed-top ">

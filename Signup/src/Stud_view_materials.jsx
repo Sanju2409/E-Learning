@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import axios from "axios";
 
 
 function StudViewMaterials() {
+
     const [materials, setMaterials] = useState([]);
     const location = useLocation();
+    
+    const userEmail = location.state?.userEmail;
     const courseId = location.state.courseId;
     const staffId=location.state.staffId;
     console.log(location.state);
@@ -46,6 +49,28 @@ function StudViewMaterials() {
 
     return (
         <div className="vh-100">
+                 <nav className="navbarstaff justify-content-space-between fixed-top">
+                    <div className="container-fluid d-flex justify-content-between">
+                        <div>
+                            <p className="welcome-message">Hello, {userEmail}!</p>
+                        </div>
+                        <div>
+                            <ul className="navbar-nav-horizontal">
+                                <li className="nav-item">
+                                    <Link to="/Student-dashboard" state={{ userEmail }} className="nav-link">Home</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/Studviewcourse" state={{ userEmail }} className="nav-link">View Courses</Link>
+                                </li><li className="nav-item">
+                                    <Link to="/Announcements" state={{ userEmail }} className="nav-link">Announcements</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/Profiles" state={{ userEmail }} className="nav-link">Profile</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
             <h1 className="material-content-title">View Materials</h1>
             <ul className="material-content-table">
                 {materials.map(material => (
